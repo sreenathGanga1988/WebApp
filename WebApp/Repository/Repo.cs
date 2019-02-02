@@ -28,8 +28,9 @@ namespace WebApp.Repository
             pur.TotalBill = str.InvoiceValue;
             pur.TotalPaid = str.InvoiceValue;
             pur.TotalDiscount = 0;
-           
 
+            pur.StoreID = 1;
+           
             pur.IsCommited = false;
 
 

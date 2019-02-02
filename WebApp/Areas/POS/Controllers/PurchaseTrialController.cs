@@ -28,12 +28,9 @@ namespace WebApp.Areas.POS.Controllers
 
             bool status = false;
             Repository.PurchaseInvoiceRepository purchaseInvoiceRepository = new Repository.PurchaseInvoiceRepository();
-
-            purchaseInvoiceRepository.AddPurchaseInvoicemaster(order);
-            
+            purchaseInvoiceRepository.AddPurchaseInvoicemaster(order);            
               status = true;
-
-
+            
             return new JsonResult { Data = new { status = status } };
         }
 
