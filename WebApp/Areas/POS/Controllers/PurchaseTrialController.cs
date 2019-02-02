@@ -18,18 +18,20 @@ namespace WebApp.Areas.POS.Controllers
             ViewBag.StoreID = new SelectList(db.Stores, "StoreID", "StoreName");
             ViewBag.CategoryID = new SelectList(db.Categories , "Id", "CategoryName");
             ViewBag.ItemNameID = new SelectList(db.ItemNames , "Id", "ItemDesc");
-            PurchaseViewModel mdl = new PurchaseViewModel();
+            Models.PurchaseViewModel mdl = new Models.PurchaseViewModel();
             return View(mdl);
         }
 
         [HttpPost]
-        public JsonResult Create(PurchaseViewModel order)
+        public JsonResult Create(Models.PurchaseViewModel order)
         {
 
             bool status = false;
-          
-            //string reqnum = freightChargeRepo.InsertLabCharges(order);
-            status = true;
+            Repository.PurchaseInvoiceRepository purchaseInvoiceRepository = new Repository.PurchaseInvoiceRepository();
+
+            purchaseInvoiceRepository.AddPurchaseInvoicemaster(order);
+            
+              status = true;
 
 
             return new JsonResult { Data = new { status = status } };

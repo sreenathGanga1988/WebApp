@@ -32,7 +32,7 @@ namespace WebApp.Models
 
         public System.Data.Entity.DbSet<WebApp.Models.Customer> Customers { get; set; }
 
-        public System.Data.Entity.DbSet<WebApp.Models.PurchaseInvoicemaster> PurchaseInvoicemasters { get; set; }
+        public System.Data.Entity.DbSet<WebApp.Models.PurchaseInvoiceMaster> PurchaseInvoicemasters { get; set; }
         public System.Data.Entity.DbSet<WebApp.Models.PurchaseInvoiceDetail> PurchaseInvoiceDetails { get; set; }
         
     }

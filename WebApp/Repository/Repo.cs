@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using WebApp.Areas.POS.Models;
 using WebApp.Models;
 
 namespace WebApp.Repository
@@ -13,16 +14,83 @@ namespace WebApp.Repository
     public class PurchaseInvoiceRepository
     {
         WebAppContext  cntxt = new WebAppContext();
-        public PurchaseInvoicemaster AddPurchaseInvoicemaster(PurchaseInvoicemaster str)
+        public PurchaseInvoiceMaster AddPurchaseInvoicemaster(PurchaseViewModel str)
         {
+              
 
-            cntxt.PurchaseInvoicemasters.Add(str);
+
+
+            PurchaseInvoiceMaster pur = new PurchaseInvoiceMaster();
+            pur.CustomerID = str.CustomerID;
+            pur.PurchaseInvoiceNum = str.SupplierInvoice;
+            pur.PurchaseDate = str.PurchaseDate;
+            pur.InvoiceDate = str.SupplierInvoiceDate;
+            pur.TotalBill = str.InvoiceValue;
+            pur.TotalPaid = str.InvoiceValue;
+            pur.TotalDiscount = 0;
+           
+
+            pur.IsCommited = false;
+
+
+            cntxt.PurchaseInvoicemasters.Add(pur);
             cntxt.SaveChanges();
+
+
+
+            foreach ( PurchasedetailViewModel strdet in str.purchasedetailViewModels)
+            {
+
+
+
+
+                PurchaseInvoiceDetail purchaseInvoiceDetail = new PurchaseInvoiceDetail();
+
+                purchaseInvoiceDetail.PurchaseInvoicemasterID = pur.PurchaseInvoicemasterID;
+                purchaseInvoiceDetail.CategoryID = strdet.CategoryID;
+                purchaseInvoiceDetail.ProductName = strdet.ProductDetails;
+                purchaseInvoiceDetail.Qty = strdet.TotalQty;
+                purchaseInvoiceDetail.SerialNum = strdet.Serial;
+                purchaseInvoiceDetail.TotalPrice = strdet.TotalPrice;
+                purchaseInvoiceDetail.UnitCP = strdet.UnitPrice;
+                purchaseInvoiceDetail.UnitSP = strdet.SellingPrice;
+                purchaseInvoiceDetail.CGSTPercent = strdet.CGSTPercent;
+                purchaseInvoiceDetail.SGSTPercent = strdet.SGSTPercent;
+                purchaseInvoiceDetail.NonTaxCP = strdet.UnitPrice;
+
+
+
+                purchaseInvoiceDetail.UnitCGSTCP = 0;
+                purchaseInvoiceDetail.UnitSGSTSP = 0;
+                purchaseInvoiceDetail.UserID = 0;
+
+
+
+
+
+            }
+
+
+
+
+
+
+
+            return pur;
+
+
+
+
+
+
+
+
+           
 
             return str;
         }
 
-        public PurchaseInvoicemaster UpdatePurchaseInvoicemaster(PurchaseInvoicemaster str)
+        public PurchaseViewModel UpdatePurchaseInvoicemaster(PurchaseViewModel str)
         {
 
             var q = from purmaster in cntxt.PurchaseInvoicemasters
@@ -99,7 +167,7 @@ namespace WebApp.Repository
 
 
 
-        public List<PurchaseInvoicemaster> GetPurchaseInvoicemasterList()
+        public List<PurchaseViewModel> GetPurchaseInvoicemasterList()
         {
 
             var q = cntxt.PurchaseInvoicemasters.ToList();
@@ -107,7 +175,7 @@ namespace WebApp.Repository
             return q;
         }
 
-        public PurchaseInvoicemaster GetPurchaseInvoicemaster(int id)
+        public PurchaseViewModel GetPurchaseInvoicemaster(int id)
         {
             var q = cntxt.PurchaseInvoicemasters.Find(id);
 
@@ -122,9 +190,9 @@ namespace WebApp.Repository
         }
 
 
-        public PurchaseInvoicemaster CommitAction(Boolean iscommit, int id)
+        public PurchaseViewModel CommitAction(Boolean iscommit, int id)
         {
-            PurchaseInvoicemaster q = (from purmaster in cntxt.PurchaseInvoicemasters
+            PurchaseViewModel q = (from purmaster in cntxt.PurchaseInvoicemasters
                                        where purmaster.PurchaseInvoicemasterID == id
                                        select purmaster).FirstOrDefault();
 

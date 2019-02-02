@@ -28,7 +28,7 @@ namespace WebApp.Areas.POS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PurchaseInvoicemaster purchaseInvoicemaster = db.PurchaseInvoicemasters.Find(id);
+            PurchaseInvoiceMaster purchaseInvoicemaster = db.PurchaseInvoicemasters.Find(id);
             if (purchaseInvoicemaster == null)
             {
                 return HttpNotFound();
@@ -49,7 +49,7 @@ namespace WebApp.Areas.POS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PurchaseInvoicemasterID,PurchaseInvoiceNum,StoreID,CustomerID,InvoiceDate,PurchaseDate,TotalPaid,TotalBill,TotalDiscount,RoundOffAmount,IsCommited,IsDeleted,DeletedBy,DeletedDate")] PurchaseInvoicemaster purchaseInvoicemaster)
+        public ActionResult Create([Bind(Include = "PurchaseInvoicemasterID,PurchaseInvoiceNum,StoreID,CustomerID,InvoiceDate,PurchaseDate,TotalPaid,TotalBill,TotalDiscount,RoundOffAmount,IsCommited,IsDeleted,DeletedBy,DeletedDate")] PurchaseInvoiceMaster purchaseInvoicemaster)
         {
             if (ModelState.IsValid)
             {
@@ -70,7 +70,7 @@ namespace WebApp.Areas.POS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PurchaseInvoicemaster purchaseInvoicemaster = db.PurchaseInvoicemasters.Find(id);
+            PurchaseInvoiceMaster purchaseInvoicemaster = db.PurchaseInvoicemasters.Find(id);
             if (purchaseInvoicemaster == null)
             {
                 return HttpNotFound();
@@ -85,7 +85,7 @@ namespace WebApp.Areas.POS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PurchaseInvoicemasterID,PurchaseInvoiceNum,StoreID,CustomerID,InvoiceDate,PurchaseDate,TotalPaid,TotalBill,TotalDiscount,RoundOffAmount,IsCommited,IsDeleted,DeletedBy,DeletedDate")] PurchaseInvoicemaster purchaseInvoicemaster)
+        public ActionResult Edit([Bind(Include = "PurchaseInvoicemasterID,PurchaseInvoiceNum,StoreID,CustomerID,InvoiceDate,PurchaseDate,TotalPaid,TotalBill,TotalDiscount,RoundOffAmount,IsCommited,IsDeleted,DeletedBy,DeletedDate")] PurchaseInvoiceMaster purchaseInvoicemaster)
         {
             if (ModelState.IsValid)
             {
@@ -105,7 +105,7 @@ namespace WebApp.Areas.POS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PurchaseInvoicemaster purchaseInvoicemaster = db.PurchaseInvoicemasters.Find(id);
+            PurchaseInvoiceMaster purchaseInvoicemaster = db.PurchaseInvoicemasters.Find(id);
             if (purchaseInvoicemaster == null)
             {
                 return HttpNotFound();
@@ -118,7 +118,7 @@ namespace WebApp.Areas.POS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PurchaseInvoicemaster purchaseInvoicemaster = db.PurchaseInvoicemasters.Find(id);
+            PurchaseInvoiceMaster purchaseInvoicemaster = db.PurchaseInvoicemasters.Find(id);
             db.PurchaseInvoicemasters.Remove(purchaseInvoicemaster);
             db.SaveChanges();
             return RedirectToAction("Index");

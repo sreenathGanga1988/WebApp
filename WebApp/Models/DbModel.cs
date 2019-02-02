@@ -135,7 +135,7 @@ namespace WebApp.Models
 
     }
 
-    public class PurchaseInvoicemaster
+    public class PurchaseInvoiceMaster
     {
 
         [Key]
@@ -213,7 +213,7 @@ namespace WebApp.Models
         public virtual List<Product> Products { get; set; }
         public int UserID { get; set; }
         public virtual Category Category { get; set; }
-        public virtual PurchaseInvoicemaster PurchaseInvoicemaster { get; set; }
+        public virtual PurchaseInvoiceMaster PurchaseInvoicemaster { get; set; }
 
     }
 
