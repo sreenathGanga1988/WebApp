@@ -1,0 +1,335 @@
+﻿@model WebApp.Areas.POS.Models.PurchaseViewModel
+
+
+<h4>Create</h4>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="form-group">
+
+            <div class="col-md-6">
+                <label for="PurchaseInvoiceNum" class="col-md-5 control-label ">Purchase Invoice</label>
+                <input type="text" id="PurchaseInvoiceNum" class="form-control col-md-7" />
+            </div>
+            <div class="col-md-6">
+                <label for="CustomerID" class="col-md-5 control-label ">Supplier Name</label>
+                @Html.DropDownList("CustomerID", null, htmlAttributes: new { @class = "form-control col-md-7 Chooosen" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-6">
+                <label for="InvoiceDate" class="col-md-5 control-label ">Invoice Date</label>
+
+                <input type="text" id="InvoiceDate" class="form-control col-md-7 datepicker" />
+
+
+            </div>
+            <div class="col-md-6">
+
+                <label for="PurchaseDate" class="col-md-5 control-label ">Purchase Date</label>
+
+                <input type="text" id="PurchaseDate" class="form-control col-md-7 datepicker" />
+
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-6">
+                <label for="TotalBill" class="col-md-5 control-label ">Total Bill</label>
+                <input type="text" id="TotalBill" class="form-control col-md-7" />
+
+            </div>
+            <div class="col-md-6">
+
+                <label for="TotalPaid" class="col-md-5 control-label ">Total Paid</label>
+                <input type="text" id="TotalPaid" class="form-control col-md-7" />
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="details">
+        <h4>
+            Product Wise Details
+        </h4>
+        <table class="table table-responsive">
+            <tr>
+                <th style="width:150px">Category</th>
+                <th style="width:150px">Item Name</th>
+                <th style="width:200px">Product Details</th>
+                <th style="width:200px">Serial </th>
+                <th style="width:60px">Total Qty</th>
+                <th style="width:80px">Total Price</th>
+                <th style="width:60px">CGST %</th>
+                <th style="width:60px">SGST %</th>
+
+            </tr>
+            <tr class="mycontainer" id="mainrow">
+                <td style="width:150px">
+                    @Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control  Chooosen" })
+
+
+                    <span class="error">Select Atc</span>
+                </td>
+
+                <td style="width:150px">
+                    @Html.DropDownList("ItemNameID", null, htmlAttributes: new { @class = "form-control  Chooosen" })
+                    <span class="error">Select Atc</span>
+                </td>
+                <td style="width:200px;height:100px">
+
+                    <textarea name="ProductDesc" id="ProductDesc" style="width:200px;height:60px;"></textarea>
+                    <span class="error"> ProductDesc required</span>
+
+
+
+                </td>
+                <td style="width:200px">
+
+                    <textarea name="SelialNum" id="SelialNum" style="width:200px;height:60px;"></textarea>
+
+                    <span class="error"> SelialNum required</span>
+
+
+
+                </td>
+
+                <td>
+
+
+                    <input type="number" id="TotalQty" class="TotalQty form-control" onchange="Calculate()" />
+                    <span class="error"> TotalQty required</span>
+
+
+
+                </td>
+                <td style="width:80px">
+
+
+                    <input type="number" id="TotalPrice" class="TotalPrice form-control" onchange="Calculate()" />
+                    <span class="error"> Total Price required</span>
+
+
+
+                </td>
+                <td style="width:60px">
+                    <input type="number" id="CGSTPercent" class="CGSTPercent form-control" value="9" onchange="Calculate()" />
+                    <span class="error">CGST % required</span>
+                </td>
+                <td style="width:60px">
+                    <input type="number" id="SGSTPercent" class="SGSTPercent form-control" value="9" onchange="Calculate()" />
+                    <span class="error">SGST % required</span>
+                </td>
+
+            </tr>
+
+            <tr>
+                <th style="width:150px">Unit Price</th>
+                <td> <input type="text" id="UnitCP" class="UnitCP form-control" readonly value="0" /></td>
+                <th style="width:150px">Selling Price</th>
+                <td> <input type="number" id="UnitSP" class="UnitSP form-control" value="0" /> </td>
+                <th>Total Qty</th>
+                <th>Total Price</th>
+
+                <td colspan="2">
+                    <input type="button" id="add" value="add" style="width:80px" class="btn btn-success" />
+                </td>
+
+            </tr>
+        </table>
+
+
+
+    </div>
+
+
+    <div>
+
+        <table id="detailtable" class="table table-responsive table-condensed table-striped">
+            <tr>
+                <th>CategoryID</th>
+                <th>ItemNameID</th>
+                <th>Category</th>
+                <th>ItemName</th>
+                <th>ProductDetails</th>
+                <th>Serial </th>
+                <th>Total Qty</th>
+                <th>Total Price</th>
+                <th>CGST %</th>
+                <th>SGST %</th>
+                <th>Unit Price</th>
+                <th>Selling Price</th>
+
+            </tr>
+            @*<tr class="mycontainer" id="DetailRow" style="border-bottom:solid">
+                <td class='CategoryID'></td>
+                <td class='ItemNameID'></td>
+                <td class='Category'></td>
+                <td class='ItemName'></td>
+                <td class='ProductDetails'></td>
+                <td class='Serial'> </td>
+                <td class='TotalQty'></td>
+                <td class='TotalPrice'></td>
+                <td class='CGSTPercent'></td>
+                <td class='SGSTPercent'></td>
+                <td class='UnitPrice'></td>
+                <td class='SellingPrice'></td>
+            </tr>*@
+
+
+
+
+        </table>
+
+    </div>
+
+
+
+
+    <div style="padding:10px 0; text-align:right">
+        @*<input id="submit" type="button" value="Save Order" class="btn btn-warning" style="padding:10px 20px" />*@
+
+        <input id="submit" type="button" value="Save Order" class="btn btn-warning" style="padding:10px 20px" />
+
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script>
+    $(document).ready(function () {
+
+
+
+        $("#add").on("click", function () {
+            alert("click");
+
+            var categoryName = $("#CategoryID option:selected").text()
+            var categoryid = $("#CategoryID option:selected").val()
+            var ItemName = $("#ItemNameID option:selected").text()
+            var Itemid = $("#ItemNameID option:selected").val()
+
+            var ProductDetails = $("#ProductDesc").val();
+            var Serial = $("#SelialNum").val();
+            var TotalQty = $("#TotalQty").val();
+            var TotalPrice = $("#TotalPrice").val();
+            var CGSTPercent = $("#CGSTPercent").val();
+            var SGSTPercent = $("#SGSTPercent").val();
+            var UnitPrice = $("#UnitCP").val();
+            var SellingPrice = $("#UnitSP").val();
+
+
+            var markup = " <tr class='mycontainer' id='DetailRow' style=\"border-bottom: solid\"> \
+                    <td class= 'CategoryID'>" + categoryid + "</td > \
+                    <td class= 'ItemNameID'>" + Itemid + "</td> \
+                    <td class= 'Category'>" + categoryName + "</td> \
+                    <td class= 'ItemName'>" + ItemName + "</td> \
+                    <td class= 'ProductDetails'>" + ProductDetails + "</td> \
+                    <td class= 'Serial'>" + Serial + " </td> \
+                    <td class= 'TotalQty'>" + TotalQty + "</td> \
+                    <td class='TotalPrice'>" + TotalPrice + "</td> \
+                    <td class='CGSTPercent'>" + CGSTPercent + "</td> \
+                    <td class='SGSTPercent'>" + SGSTPercent + "</td> \
+                    <td class='UnitPrice'>" + UnitPrice + "</td> \
+                    <td class='SellingPrice'>" + SellingPrice + "</td> </tr > ";
+            $('#detailtable tbody').append(markup);
+
+
+            $("#ProductDesc").val("")
+            $("#SelialNum").val("")
+            $("#TotalQty").val("0")
+            $("#TotalPrice").val("0")
+            $("#UnitCP").val("0")
+            $("#UnitSP").val("0")
+
+
+        });
+
+
+        $("#submit").on("click", function () {
+            alert('323223');
+            var isAllValid = true;
+            var list = [];
+            $('#detailtable tbody tr').each(function () {
+              
+                var orderItem = {
+                    categoryid: $('.CategoryID', this).html(),
+                    Itemid: parseFloat($('.ItemNameID', this).html()),
+                    ProductDetails: $('.ProductDesc', this).html(),
+                    Serial: parseFloat($('.SelialNum', this).html()),
+                    TotalQty: $('.TotalQty', this).html(),
+                    TotalPrice: parseFloat($('.TotalPrice', this).html()),
+                    CGSTPercent: $('.CGSTPercent', this).html(),
+                    SGSTPercent: parseFloat($('.SGSTPercent', this).html()),
+                    UnitPrice: $('UnitCP', this).html(),
+                    SellingPrice: $('UnitSP', this).html(),
+                   
+                }
+                list.push(orderItem);
+            });
+                debugger
+            if (isAllValid) {
+                var data = {
+                    SupplierInvoice: $('#PurchaseInvoiceNum').val().trim(),                   
+                    CustomerID: $("#CustomerID option:selected").val(),
+                    SupplierInvoiceDate: $('#InvoiceDate').val(),
+                    PurchaseDate: $('#PurchaseDate').val(),
+                    InvoiceValue: $('#TotalBill').val(),
+                    PaidValue: $('#TotalPaid').val(),
+                    purchasedetailViewModels: list,                                                             
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/POS/PurchaseTrial/Create',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function (data) {
+                        if (data.status) {
+                            alert('Successfully saved');
+                         
+                            list = [];
+                            $('#PurchaseInvoiceNum,#TotalBill,#TotalPaid').val('');
+                            $('#orderdetailsItems').empty();
+                        }
+                        else {
+                            alert('Error');
+                        }
+                        $('#submit').val('Save');
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        $('#submit').val('Save');
+                    }
+                });
+
+            }
+
+
+        });
+
+    });
+    function Calculate() {
+
+
+        var TotalQty = $("#TotalQty").val() || 0;
+        var TotalPrice = $("#TotalPrice").val();
+
+
+        var unitprice = parseFloat(TotalPrice.toString()) / parseFloat(TotalQty.toString())
+        var unitSellingprice = 1.25 * unitprice
+
+        $("#UnitCP").val(unitprice);
+        $("#UnitSP").val(unitSellingprice);
+
+    }
+</script>

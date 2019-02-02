@@ -1,0 +1,122 @@
+﻿@model WebApp.Models.PurchaseInvoicemaster
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PurchaseInvoicemaster</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer.CustomerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer.CustomerName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Store.StoreName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Store.StoreName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PurchaseInvoiceNum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PurchaseInvoiceNum)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InvoiceDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InvoiceDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PurchaseDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PurchaseDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalPaid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalPaid)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalBill)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalBill)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalDiscount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalDiscount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RoundOffAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RoundOffAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCommited)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCommited)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeletedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeletedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeletedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeletedDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PurchaseInvoicemasterID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

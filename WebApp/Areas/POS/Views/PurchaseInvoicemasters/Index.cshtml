@@ -1,0 +1,105 @@
+﻿@model IEnumerable<WebApp.Models.PurchaseInvoicemaster>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Customer.CustomerName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Store.StoreName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PurchaseInvoiceNum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InvoiceDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PurchaseDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalPaid)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalBill)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalDiscount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RoundOffAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsCommited)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeletedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeletedDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Store.StoreName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PurchaseInvoiceNum)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InvoiceDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PurchaseDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalPaid)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalBill)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalDiscount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RoundOffAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsCommited)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsDeleted)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeletedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeletedDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PurchaseInvoicemasterID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PurchaseInvoicemasterID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PurchaseInvoicemasterID })
+        </td>
+    </tr>
+}
+
+</table>

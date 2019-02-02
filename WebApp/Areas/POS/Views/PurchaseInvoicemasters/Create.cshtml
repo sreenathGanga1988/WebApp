@@ -1,0 +1,165 @@
+﻿@model WebApp.Models.PurchaseInvoicemaster
+
+@{
+    ViewBag.Title = "Create";
+}
+<script>
+
+    $(document).ready(function () {
+
+        $('.Chooosen').chosen()
+    });
+
+</script>
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+
+
+        <div class="form-group">
+
+            <div class="col-md-6">
+                <label for="PurchaseInvoiceNum" class="col-md-5 control-label ">Purchase Invoice</label>
+                <input type="text" id="PurchaseInvoiceNum" class="form-control col-md-7" />
+            </div>
+            <div class="col-md-6">
+                <label for="CustomerID" class="col-md-5 control-label ">Supplier Name</label>
+                @Html.DropDownList("CustomerID", null, htmlAttributes: new { @class = "form-control col-md-7 Chooosen" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-6">
+                <label for="InvoiceDate" class="col-md-5 control-label ">Invoice Date</label>
+
+                <input type="text" id="InvoiceDate" class="form-control col-md-7" />
+
+
+            </div>
+            <div class="col-md-6">
+
+                <label for="PurchaseDate" class="col-md-5 control-label ">Purchase Date</label>
+
+                <input type="text" id="PurchaseDate" class="form-control col-md-7" />
+
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-6">
+                <label for="TotalBill" class="col-md-5 control-label ">Total Bill</label>
+                <input type="text" id="TotalBill" class="form-control col-md-7" />
+
+            </div>
+            <div class="col-md-6">
+
+                <label for="TotalPaid" class="col-md-5 control-label ">Total Paid</label>
+                <input type="text" id="TotalPaid" class="form-control col-md-7" />
+
+            </div>
+
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+
+    <div class="details">
+        <h2>
+           Product Wise Details
+        </h2>
+        <table class="table table-responsive">
+            <tr>
+                <td>Category</td>
+                <td>Item Name</td>
+                <td>Product Details</td>
+                <td  style="width:50px">Total Qty</td>
+                <td  style="width:70px">Total Price</td>
+                <td style="width:50px">CGST %</td>
+                <td style="width:50px">SGST %</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr class="mycontainer" id="mainrow">
+                <td>
+                    <select id="CategoryID" class="CategoryID form-control" onchange="loadValues(this)">
+                        <option>Select</option>
+                    </select>
+                    <span class="error">Select Atc</span>
+                </td>
+
+                <td>
+                    <select id="ItemID" class="ItemID form-control">
+                        <option>Select</option>
+                    </select>
+                    <span class="error">Select Atc</span>
+                </td>
+                <td>
+
+
+                    <input type="text" id="ProductDesc" class="ProductDesc form-control" />
+                    <span class="error"> ProductDesc required</span>
+
+
+
+                </td>
+                
+                <td>
+
+
+                    <input type="text" id="TotalQty" class="TotalQty form-control" />
+                    <span class="error"> TotalQty required</span>
+
+
+
+                </td>
+                <td>
+
+
+                    <input type="text" id="TotalPrice" class="TotalQty form-control" />
+                    <span class="error"> Total Price required</span>
+
+
+
+                </td>
+                <td style="width:50px">
+                    <input type="text" id="CGSTPercent" class="CGSTPercent form-control"  />
+                    <span class="error">CGST % required</span>
+                </td>
+                <td style="width:50px">
+                    <input type="text" id="SGSTPercent" class="rate form-control" />
+                    <span class="error">SGST % required</span>
+                </td>
+                <td>
+                    <input type="button" id="add" value="add" style="width:80px" class="btn btn-success" />
+                </td>
+            </tr>
+        </table>
+        <div id="orderItems">
+            <table class="table table-responsive" id="orderdetailsItems"><tbody></tbody></table>
+            <span id="orderItemError" style="color:red"></span>
+        </div>
+        <div style="padding:10px 0; text-align:right">
+            @*<input id="submit" type="button" value="Save Order" class="btn btn-warning" style="padding:10px 20px" />*@
+
+            <input id="submit" type="button" value="Save Order" class="btn btn-warning" style="padding:10px 20px" />
+
+        </div>
+
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
