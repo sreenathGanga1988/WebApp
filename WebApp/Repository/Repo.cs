@@ -65,12 +65,12 @@ namespace WebApp.Repository
                 purchaseInvoiceDetail.UserID = 0;
 
 
-
+                pur.PurchaseInvoiceDetails.Add(purchaseInvoiceDetail);
 
 
             }
 
-
+            cntxt.SaveChanges();
 
 
 
@@ -87,8 +87,7 @@ namespace WebApp.Repository
 
            
 
-            return str;
-        }
+                  }
 
         public PurchaseViewModel UpdatePurchaseInvoicemaster(PurchaseViewModel str)
         {
@@ -102,13 +101,13 @@ namespace WebApp.Repository
 
 
                 element.CustomerID = str.CustomerID;
-                element.PurchaseInvoiceNum = str.PurchaseInvoiceNum;
+                element.PurchaseInvoiceNum = str.SupplierInvoice ;
                 element.PurchaseDate = str.PurchaseDate;
-                element.InvoiceDate = str.InvoiceDate;
-                element.TotalBill = str.CustomerID;
+                element.InvoiceDate = str.SupplierInvoiceDate;
+                element.TotalBill = str.InvoiceValue;
 
                // element.UserID = Program.UserID;
-                element.IsCommited = str.IsCommited;
+                element.IsCommited = true;
 
 
             }
@@ -167,7 +166,7 @@ namespace WebApp.Repository
 
 
 
-        public List<PurchaseViewModel> GetPurchaseInvoicemasterList()
+        public List<PurchaseInvoiceMaster> GetPurchaseInvoicemasterList()
         {
 
             var q = cntxt.PurchaseInvoicemasters.ToList();
@@ -175,7 +174,7 @@ namespace WebApp.Repository
             return q;
         }
 
-        public PurchaseViewModel GetPurchaseInvoicemaster(int id)
+        public PurchaseInvoiceMaster GetPurchaseInvoicemaster(int id)
         {
             var q = cntxt.PurchaseInvoicemasters.Find(id);
 
@@ -190,9 +189,9 @@ namespace WebApp.Repository
         }
 
 
-        public PurchaseViewModel CommitAction(Boolean iscommit, int id)
+        public PurchaseInvoiceMaster CommitAction(Boolean iscommit, int id)
         {
-            PurchaseViewModel q = (from purmaster in cntxt.PurchaseInvoicemasters
+            PurchaseInvoiceMaster q = (from purmaster in cntxt.PurchaseInvoicemasters
                                        where purmaster.PurchaseInvoicemasterID == id
                                        select purmaster).FirstOrDefault();
 

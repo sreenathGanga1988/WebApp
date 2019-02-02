@@ -7,15 +7,15 @@ namespace WebApp.Areas.POS.Models
 {
     public class PurchaseViewModel
     {
-                          
+        
+        public Int32 PurchaseInvoicemasterID { get; set; }
         public string SupplierInvoice { get; set; }
         public Int32 CustomerID { get; set; }
         public DateTime SupplierInvoiceDate { get; set; }
 
         public DateTime PurchaseDate { get; set; }
         public Decimal InvoiceValue { get; set; }
-        public Decimal PaidValue { get; set; }
-        
+        public Decimal PaidValue { get; set; }        
         public Decimal CategoryID { get; set; }
         public Decimal ItemNameId { get; set; }
       public List<PurchasedetailViewModel> purchasedetailViewModels { get; set; }
