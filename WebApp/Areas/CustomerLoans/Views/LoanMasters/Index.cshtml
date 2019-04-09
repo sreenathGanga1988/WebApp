@@ -1,0 +1,76 @@
+﻿@model IEnumerable<WebApp.Models.DBModels.LoanMaster>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Customer.CustomerName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FromDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InterestPercentage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AddedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AddedUser)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FromDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InterestPercentage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AddedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AddedUser)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.LoanID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.LoanID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.LoanID })
+        </td>
+    </tr>
+}
+
+</table>

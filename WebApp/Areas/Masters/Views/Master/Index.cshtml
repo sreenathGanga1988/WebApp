@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Masters</h2>
+
+<div class="row ">
+    @Html.ActionLink("Store", "Index", "Stores", new { area = "Masters" }, new { @class = "navbar-brand" })
+    @Html.ActionLink("Customer", "Index", "Customers", new { area = "Masters" }, new { @class = "navbar-brand" })
+    @Html.ActionLink("Category", "Index", "Categories", new { area = "Masters" }, new { @class = "navbar-brand" })
+    @Html.ActionLink("Items", "Index", "ItemNames", new { area = "Masters" }, new { @class = "navbar-brand" })
+    @Html.ActionLink("Expense Items", "Index", "ExpenseItems", new { area = "Masters" }, new { @class = "navbar-brand" })
+
+</div>

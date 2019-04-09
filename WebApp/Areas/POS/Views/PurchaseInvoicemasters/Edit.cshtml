@@ -1,137 +1,320 @@
-﻿@model WebApp.Models.PurchaseInvoicemaster
+﻿@model WebApp.Models.DBModels.PurchaseInvoiceMaster
 
+@using WebApp.Models
 @{
     ViewBag.Title = "Edit";
 }
-
 <h2>Edit</h2>
+
+
+
+
+
+
+
 
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>PurchaseInvoicemaster</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.PurchaseInvoicemasterID)
+
+    @Html.HiddenFor(model => model.PurchaseInvoicemasterID)
+
+    <div class="form-horizontal ">
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PurchaseInvoiceNum, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PurchaseInvoiceNum, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PurchaseInvoiceNum, "", new { @class = "text-danger" })
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="PurchaseInvoiceNum" class="control-label ">Invoice</label>
+                    <input type="text" id="PurchaseInvoiceNum" required class="form-control col-md-7" value="@Model.PurchaseInvoiceNum" />
+                </div>
+                <div class="col-md-6">
+                    <label for="CustomerID" class=" control-label ">Supplier</label>
+                    <div class="input-group">
+                        @Html.DropDownList("CustomerID", null, htmlAttributes: new { @class = "form-control Chooosen" })
+
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.StoreID, "StoreID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("StoreID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.StoreID, "", new { @class = "text-danger" })
+            <div class="row ">
+                <div class="col-md-6">
+                    <label for="InvoiceDate" class="control-label ">Invoice Date</label>
+                    <input type="text" id="InvoiceDate" required class="form-control datepicker" value="@Model.InvoiceDate" />
+                </div>
+                <div class="col-md-6">
+                    <label for="PurchaseDate" class=" control-label ">Purchase Date</label>
+                    <input type="text" id="PurchaseDate" required class="form-control datepicker" value="@Model.PurchaseDate" />
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CustomerID, "CustomerID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CustomerID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CustomerID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.InvoiceDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.InvoiceDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.InvoiceDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PurchaseDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TotalPaid, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TotalPaid, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TotalPaid, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TotalBill, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TotalBill, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TotalBill, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TotalDiscount, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TotalDiscount, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TotalDiscount, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.RoundOffAmount, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.RoundOffAmount, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RoundOffAmount, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsCommited, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsCommited)
-                    @Html.ValidationMessageFor(model => model.IsCommited, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="TotalBill" class=" control-label ">Total Bill</label>
+                    <input type="number" id="TotalBill" min="0" step="any" class="form-control" oninput="validity.valid||(value='');" value="@Model.TotalBill" />
+                </div>
+                <div class="col-md-6">
+                    <label for="TotalPaid" class="control-label ">Total Paid</label>
+                    <input type="number" id="TotalPaid" min="0" step="any" class="form-control" oninput="validity.valid||(value='');" value="@Model.TotalPaid " />
                 </div>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.IsDeleted, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsDeleted)
-                    @Html.ValidationMessageFor(model => model.IsDeleted, "", new { @class = "text-danger" })
-                </div>
-            </div>
+            <h4>
+                Product Wise Details
+            </h4>
+            <table class="table  table-condensed table-bordered table-sm">
+                <tr>
+                    <th>Category</th>
+                    <th>Item Name</th>
+                    <th>Product Details</th>
+                    <th>Serial </th>
+                    <th style="width:100px">Total Qty</th>
+                    <th style="width:120px">Total Price</th>
+                    <th style="width:50px">CGST %</th>
+                    <th style="width:50px">SGST %</th>
+                </tr>
+                <tr class="mycontainer" id="mainrow">
+                    <td>
+                        @Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control Chooosen" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("ItemNameID", null, htmlAttributes: new { @class = "Chooosen form-control" })
+                    </td>
+                    <td>
+                        <textarea name="ProductDesc" id="ProductDesc" class="form-control"></textarea>
+                    </td>
+                    <td>
+                        <textarea name="SelialNum" id="SelialNum" class="form-control"></textarea>
+                    </td>
+                    <td>
+
+                        <input type="number" id="TotalQty" style="width:100px" class="TotalQty  form-control" min="0" oninput="validity.valid || (value = '');" onchange="Calculate()" />
+                    </td>
+                    <td>
+
+                        <input type="number" id="TotalPrice" style="width:120px" class="TotalPrice form-control" oninput="validity.valid||(value='');" onchange="Calculate()" />
+                    </td>
+                    <td style="width:50px">
+                        <input type="number" id="CGSTPercent" style="width:50px" class="CGSTPercent form-control" value="9" oninput="validity.valid||(value='');" onchange="Calculate()" />
+                    </td>
+                    <td style="width:50px">
+                        <input type="number" id="SGSTPercent" style="width:50px" class="SGSTPercent form-control " value="9" oninput="validity.valid||(value='');" onchange="Calculate()" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>Unit Price</th>
+                    <td> <input type="text" id="UnitCP" class="UnitCP " readonly value="0" /></td>
+                    <th>Selling Price</th>
+                    <td> <input type="number" id="UnitSP" class="UnitSP " value="0" /> </td>
+                    <th>Total Qty</th>
+                    <th>Total Price</th>
+                    <td colspan="2">
+                        <input type="button" id="add" value="add" class="btn btn-success" />
+                    </td>
+                </tr>
+            </table>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.DeletedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DeletedBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DeletedBy, "", new { @class = "text-danger" })
-            </div>
+        <div>
+            <table id="detailtable" class="table table-responsive table-condensed table-striped">
+                <thead>
+
+                    <tr>
+                        <th style="display:none;">InvDetid</th>
+                        <th style="display:none;">CategoryID</th>
+                        <th style="display:none;">ItemNameID</th>
+                        <th>Category</th>
+                        <th>ItemName</th>
+                        <th>ProductDetails</th>
+                        <th>Serial </th>
+                        <th>Total Qty</th>
+                        <th>Total Price</th>
+                        <th>CGST %</th>
+                        <th>SGST %</th>
+                        <th>Unit Price</th>
+                        <th>Selling Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (WebApp.Models.DBModels.PurchaseInvoiceDetail purdet in Model.PurchaseInvoiceDetails)
+                    {
+                        if (purdet.IsDeleted == false)
+                        {
+                            <tr class='mycontainer' id='DetailRow' style="border-bottom: solid">
+                                <td style="display:none;" class='PurchasedetailViewModelID'>@purdet.PurchaseInvoiceDetailID</td>
+                                <td style="display:none;" class='CategoryID'>@purdet.CategoryID</td>
+                                <td style="display:none;" class='ItemNameID'>@purdet.ItemNameId </td>
+                                <td class='Category'>@purdet.Category.CategoryName </td>
+                                <td class='ItemName'>@purdet.ItemName.ItemDesc</td>
+                                <td class='ProductDetails'>@purdet.ProductName </td>
+                                <td class='Serial'>@purdet.SerialNum </td>
+                                <td class='TotalQty'>@purdet.Qty</td>
+                                <td class='TotalPrice'>@purdet.TotalPrice</td>
+                                <td class='CGSTPercent'>@purdet.CGSTPercent</td>
+                                <td class='SGSTPercent'>@purdet.SGSTPercent</td>
+                                <td class='UnitPrice'>@purdet.UnitCP </td>
+                                <td class='SellingPrice'>@purdet.UnitSP</td>
+                                <td><img src="/Content/Images/download.jpg" style="width: 20px;height: 20px;" class='delete' /></td>
+                            </tr>
+
+                        }
+
+
+                    }
+                </tbody>
+            </table>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.DeletedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DeletedDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DeletedDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+        <div class="form-group" style="padding:10px 0; text-align:right">
+            <input id="submit" type="submit" value="Update Purchase" class="btn btn-warning" style="padding:10px 20px" />
         </div>
     </div>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+    @Html.Partial("~/Areas/Masters/Views/CustomerAsync/CustomerAddPartial.cshtml");
+
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+<script>
+    $(document).ready(function () {
+
+        $.unblockUI()
+
+        $("#add").on("click", function () {
+
+            var categoryName = $("#CategoryID option:selected").text()
+            var categoryid = $("#CategoryID option:selected").val()
+            var ItemName = $("#ItemNameID option:selected").text()
+            var Itemid = $("#ItemNameID option:selected").val()
+
+            var ProductDetails = $("#ProductDesc").val();
+            var Serial = $("#SelialNum").val();
+            var TotalQty = $("#TotalQty").val();
+            var TotalPrice = $("#TotalPrice").val();
+            var CGSTPercent = $("#CGSTPercent").val();
+            var SGSTPercent = $("#SGSTPercent").val();
+            var UnitPrice = $("#UnitCP").val();
+            var SellingPrice = $("#UnitSP").val();
+
+            var markup = " <tr class='mycontainer' id='DetailRow' style=\"border-bottom: solid\"> \
+                    <td style=\"display:none;\" class= 'PurchasedetailViewModelID'>0</td > \
+                    <td style=\"display:none;\" class= 'CategoryID'>" + categoryid + "</td > \
+                    <td style=\"display:none;\" class= 'ItemNameID'>" + Itemid + "</td> \
+                    <td class= 'Category'>" + categoryName + "</td> \
+                    <td class= 'ItemName'>" + ItemName + "</td> \
+                    <td class= 'ProductDetails'>" + ProductDetails + "</td> \
+                    <td class= 'Serial'>" + Serial + " </td> \
+                    <td class= 'TotalQty'>" + TotalQty + "</td> \
+                    <td class='TotalPrice'>" + TotalPrice + "</td> \
+                    <td class='CGSTPercent'>" + CGSTPercent + "</td> \
+                    <td class='SGSTPercent'>" + SGSTPercent + "</td> \
+                    <td class='UnitPrice'>" + UnitPrice + "</td> \
+                    <td class='SellingPrice'>" + SellingPrice + "</td> \
+                    <td><img src=\"/Content/Images/download.jpg\" style=\"width: 20px;height: 20px;\" class='delete' /></td></tr > ";
+            $('#detailtable tbody').append(markup);
+
+            $("#ProductDesc").val("")
+            $("#SelialNum").val("")
+            $("#TotalQty").val("0")
+            $("#TotalPrice").val("0")
+            $("#UnitCP").val("0")
+            $("#UnitSP").val("0")
+
+        });
+
+        $("#submit").on("click", function () {
+            var valid = this.form.checkValidity();
+
+            if (valid) {
+                event.preventDefault();
+                $.blockUI()
+
+                var isAllValid = true;
+                var list = [];
+                $('#detailtable tbody tr').each(function () {
+
+                    var orderItem = {
+                        PurchasedetailViewModelID: $('.PurchasedetailViewModelID', this).html(),
+                        categoryid: $('.CategoryID', this).html(),
+                        ItemNameID: parseFloat($('.ItemNameID', this).html()),
+                        ProductDetails: $('.ProductDetails', this).html(),
+                        Serial: parseFloat($('.SelialNum', this).html()),
+                        TotalQty: $('.TotalQty', this).html(),
+                        TotalPrice: parseFloat($('.TotalPrice', this).html()),
+                        CGSTPercent: $('.CGSTPercent', this).html(),
+                        SGSTPercent: parseFloat($('.SGSTPercent', this).html()),
+                        UnitPrice: $('.UnitPrice', this).html(),
+                        SellingPrice: $('.SellingPrice', this).html(),
+
+                    }
+                    list.push(orderItem);
+                });
+                debugger
+                if (isAllValid) {
+                    var data = {
+                        PurchaseInvoicemasterID: $('#PurchaseInvoicemasterID').val().trim(),
+                        SupplierInvoice: $('#PurchaseInvoiceNum').val().trim(),
+                        CustomerID: $("#CustomerID option:selected").val(),
+                        SupplierInvoiceDate: $('#InvoiceDate').datepicker('getDate'),
+                        PurchaseDate: $('#PurchaseDate').datepicker('getDate'),
+                        InvoiceValue: $('#TotalBill').val(),
+                        PaidValue: $('#TotalPaid').val(),
+                        purchasedetailViewModels: list,
+                    }
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/POS/PurchaseInvoicemasters/Edit',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json',
+                        success: function (data) {
+                            if (data.status) {
+
+                                list = [];
+                                $('#PurchaseInvoiceNum,#TotalBill,#TotalPaid').val('');
+                                $('#orderdetailsItems').empty();
+
+                                $.unblockUI()
+                                alert('Successfully saved');
+                                var newUrl = '@Url.Action("Index", "PurchaseInvoicemasters")';
+
+
+                                bootbox.alert("Purchase Successfully saved!", function () { window.location.href = newUrl; });
+                            }
+                            else {
+                                alert('Error');
+                            }
+                            $('#submit').val('Save');
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            $('#submit').val('Save');
+                        }
+                    });
+
+                }
+            }
+
+        });
+
+        $('#detailtable').on('click', '.delete', function () {
+            $(this).parents('tr').remove();
+        });
+
+    });
+    function Calculate() {
+
+        var TotalQty = $("#TotalQty").val() || 0;
+        var TotalPrice = $("#TotalPrice").val();
+        var unitprice = parseFloat(TotalPrice.toString()) / parseFloat(TotalQty.toString())
+        var unitSellingprice = 1.25 * unitprice
+
+        $("#UnitCP").val(unitprice);
+        $("#UnitSP").val(unitSellingprice);
+
+    }
+</script>

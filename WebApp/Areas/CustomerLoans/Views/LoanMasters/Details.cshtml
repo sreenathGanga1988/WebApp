@@ -1,0 +1,105 @@
+﻿@model WebApp.Models.DBModels.LoanMaster
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<script src="~/Scripts/angular.js"></script>
+
+<div class="container" ng-app="mainApp" ng-controller="LoanController">
+
+    <div>
+
+        <p> <div> <h2 style="text-align:center ;color:green">  Hi {{LoanMaster.CustomerName}}</h2> </div></p>
+
+        <p> <div><h3 style="text-align:center;color:red"> Pending Payment : {{LoanMaster.BalanceAmount}}</h3> </div></p>
+
+        <p> <div><h6 style="text-align:center;color:red"> Last Payment : {{LoanMaster.LaystpaymentAmount}} on : {{LoanMaster.LastPaymentDate}} </h6></div></p>
+
+
+    </div>
+
+
+    <div class="card ">
+        <div class="card-header">Make Payment</div>
+        <div class="card-block">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="email">Amount:</label>
+                    <div class="col-sm-10">
+                        @*oninput="validity.valid||(value='');"*@
+                        <input type="number" class="form-control" id="email" ng-model="LoanMaster.LoanPaymentDetailViewmodal.PaidAmount" placeholder="Enter Amount">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="pwd">Pay On:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control datepicker" ng-model="LoanMaster.LoanPaymentDetailViewmodal.LoanPayDate" id="pwd" placeholder="Enter Payment Date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary" ng-click="SubmitAction()">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer"></div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    var mainApp = angular.module("mainApp", []);
+    mainApp.controller('LoanController', myControllerFunction);
+    myControllerFunction.$inject = ["$scope", "$http"];
+    function myControllerFunction($scope, $http) {
+
+
+        $http.get('http://localhost:52587/api/LoanMasters/1').then(successCallback, errorCallback);
+
+        function successCallback(response) {
+            //success code
+            $scope.LoanMaster = response.data;
+        }
+        function errorCallback(error) {
+            //error code
+            alert('error');
+        }
+
+        $scope.SubmitAction = function () {
+           
+            var data = $scope.LoanMaster;
+            $http.post('http://localhost:52587/api/LoanMasters', data).then(successCallback, errorCallback);
+        };
+
+
+
+
+    };
+
+
+</script>
+
+
+
+
+
+
+
+
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.LoanID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

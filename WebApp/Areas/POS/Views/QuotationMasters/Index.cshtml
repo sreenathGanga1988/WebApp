@@ -1,0 +1,88 @@
+﻿@model IEnumerable<WebApp.Models.DBModels.QuotationMaster>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<script>
+
+</script>
+<h4>Quotations</h4>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table filtertable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.QuoteNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer.CustomerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.store.StoreName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuoteDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuoteRevDate)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Discount)
+            </th>
+
+
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuoteNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.store.StoreName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.UserName)
+                </td>
+                <td>
+                    @item.QuoteDate.ToString("dd MMM yyyy")
+                    @*@Html.DisplayFor(modelItem => item.QuoteDate)*@
+                </td>
+                <td>
+                    @item.QuoteRevDate.ToString("dd MMM yyyy")
+                    @*@Html.DisplayFor(modelItem => item.QuoteRevDate)*@
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Discount)
+                </td>
+
+
+                <td>
+
+                    @Html.ActionLink("Edit", "Edit", new { id = item.QuotationMasterid }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.QuotationMasterid }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.QuotationMasterid })
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+
+</table>

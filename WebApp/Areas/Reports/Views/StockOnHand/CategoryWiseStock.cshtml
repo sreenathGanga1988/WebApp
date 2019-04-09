@@ -1,0 +1,70 @@
+﻿@model IEnumerable<WebApp.Areas.Reports.Models.Stockdata>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h4>Stock As of @DateTime.Now</h4>
+
+
+
+@foreach (var item in Model.Select(u => u.CategoryName).Distinct())
+{
+    <h3>@item</h3>
+
+    <table class="table filtertable">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Name</th>
+                <th>Serial</th>
+                <th>Unit Price</th>
+                <th>Supplier </th>
+                <th>Purchased On</th>
+                <th>Supplier</th>
+                <th>SupplierInvoice </th>
+                <th>Status </th>
+                <th>Sales Invoice </th>
+
+            </tr>
+
+        </thead>
+        <tbody>
+
+            @*<tr class="group">
+                    <td colspan="9">@item</td>
+                </tr>*@
+
+            @foreach (var products in Model.Where(u => u.CategoryName == item))
+            {
+                <tr>
+                    <td>@products.CategoryName</td>
+                    <td>@products.ProductName</td>
+                    <td>@products.SerialNum</td>
+                    <td>@products.UnitPrice</td>
+                    <td>@products.Supplier </td>
+                    <td>@products.PurchasedOn</td>
+                    <td>@products.Supplier</td>
+                    <td>@products.SupplierInvoice </td>
+                    <td>@products.Status </td>
+                    <td>@products.SalesInvoice </td>
+                </tr>
+
+            }
+        </tbody>
+        <tfoot></tfoot>
+    </table>
+}
+
+
+
+
+
+
+
+
+
+
+

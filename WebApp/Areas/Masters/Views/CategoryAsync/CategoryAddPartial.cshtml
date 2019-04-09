@@ -1,0 +1,73 @@
+﻿<div class="modal fade" id="CategoryModal" tabindex="-1" role="dialog" aria-labelledby="CategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CategoryModalLabel">Add Catgory</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="CategoryName" class="col-form-label">CategoryName:</label>
+                        <input type="text" class="form-control" id="CategoryName">
+                    </div>
+                    <div class="form-group">
+                        <label for="Color" class="col-form-label">Color:</label>
+                        <input type="text" class="form-control" id="Color">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="SaveCategory" type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $.unblockUI()
+        $("#SaveCategory").click(function () {
+
+            alert("meclicked");
+            $.blockUI()
+
+            var Category = {
+                CategoryName: $('#CategoryName').val(),
+                Color: $('#Color').val(),
+                Isactive: true,
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("CreateCategory", "CategoryAsync", new { Area = "Masters", })',
+                data: JSON.stringify(Category),
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data.status) {
+
+                        $('#CategoryName,#Color').val('');
+
+                        $.unblockUI()
+                        alert('Successfully saved');
+
+                    }
+                    else {
+                        alert('Error');
+                    }
+                    $('#submit').val('Save');
+                },
+                error: function (error) {
+                    console.log(error);
+                    $('#submit').val('Save');
+                }
+            });
+
+        });
+
+    });
+</script>

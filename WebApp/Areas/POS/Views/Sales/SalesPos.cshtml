@@ -1,0 +1,344 @@
+﻿@model WebApp.Areas.POS.Models.SalesViewModal
+@{
+    ViewBag.Title = "PosScreen";
+}
+<script src="~/Areas/POS/Script/Sales.js??34353453453"></script>
+@using (Html.BeginForm())
+{
+
+
+    <div class="container-fluid table-responsive">
+        <table class="table table-bordered  table-condensed w-100">
+
+            <thead>
+                <tr>
+
+                    <th class="w-25"> Category</th>
+                    <th class="w-50">Bill </th>
+                    <th class="w-25">Item</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+
+                    <td>
+                        <div class="table-wrapper-scroll-y">
+
+                            <div id="CategoryTable" class="btn-toolbar  table-wrapper-scroll-y ">
+                                @for (int i = 0; i < Model.CategoryViewModels.Count; i++)
+                                {
+                                    <a id=@Model.CategoryViewModels[i].CategoryID href="#" class="btn btn-squared-default-plain btn-primary category">
+                                        @*<i class="fa fa-android fa-5x"></i>*@
+                                        <br />
+                                        @Model.CategoryViewModels[i].CategoryName.ToString()
+
+                                    </a>
+                                }
+                            </div>
+
+
+                        </div>
+
+
+
+                    </td>
+                    <td>
+                        <div class="table-wrapper-scroll-y">
+                            <table id="BillTable" class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th style="display:none;"> InvoiceDetailID</th>
+                                        <th style="display:none;"> ProductId</th>
+                                        <th> Item</th>
+                                        <th> Serial</th>
+                                        <th>Qty</th>
+                                        <th>C.P</th>
+                                        <th>Price</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody></tbody>
+                            </table>
+
+                        </div>
+
+                    </td>
+                    <td>
+
+
+                        <div id="Producttable" class="btn-toolbar  table-wrapper-scroll-y ">
+
+                        </div>
+
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+
+
+                    <th colspan="3">
+
+                        <table id="FooterTable" class="table table-condensed">
+                            <tbody>
+                                <tr>
+                                    <th id="SelectedCustomerID" style="display:none;"></th>
+                                    <th id="SelectedPaymentModeID" style="display:none;"></th>
+                                    <th id="SelectedCustomerName"> Customer :</th>
+                                    <th id="SelectedPaymentMode"> Payment Mode :</th>
+                                    <th id="TotalBilltd">
+                                        Total:<span id="TotalBill"></span>
+
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text" id="btnGroupAddon">Discount:</div>
+                                            </div>
+                                            <input type="number" id="Discount" required min="0" step="any" class="form-control" style="width:40px" oninput="validity.valid||(value='');" />
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text" id="btnGroupAddon">Paid:</div>
+                                            </div>
+                                            <input type="number" required id="Paid" min="0" step="any" class="form-control" style="width:40px" oninput="validity.valid||(value='');" />
+                                        </div>
+                                    </th>
+                                    <th id="Balancetd">
+                                        Balance:<span id="Balance"></span>
+
+                                    </th>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+
+                    </th>
+
+                </tr>
+
+                <tr>
+
+
+                    <th colspan="3">
+
+                        <table id="FooterbtnTable" class="table table-condensed">
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <label for="InvoiceDate" class="control-label ">Invoice Date</label>
+                                        <input type="text" id="InvoiceDate" required class="form-control datepicker" />
+
+                                    </th>
+                                    <th>
+                                        <label for="Remark" class="control-label ">Remark</label>
+                                        <textarea class="form-control rounded-0" id="Remark" rows="2"></textarea>
+                                    </th>
+                                    <th>
+                                        <a id="CustomerBtn" href="/Masters/CustomerAsync/CustomerData" data-toggle="modal" data-target="#myModal" data-remote="false" data-whatever="Customer" class="btn btn-squared-default btn-primary ActnBtn">
+                                            <i class="fa fa-user fa-3x"></i>
+                                            <br />
+                                            Customer
+
+                                        </a>
+                                    </th>
+                                    <th>
+                                        <a href="/Masters/PaymentModeMasters/PaymentModeData" class="btn btn-squared-default btn-success ActnBtn" data-toggle="modal" data-whatever="Payment Mode" data-target="#myModal" data-remote="false">
+                                            <i class="fa fa-dollar-sign fa-3x"></i>
+                                            <br />
+                                            Payment Mode
+                                        </a>
+                                    </th>
+                                    <th>
+                                        <a href="#" class="btn btn-squared-default-plain btn-primary">
+                                            <i class="fa fa-android fa-5x"></i>
+                                            <br />
+                                            primary
+
+                                        </a>
+                                    </th>
+                                    <th>
+                                        <a href="#" class="btn btn-squared-default-plain btn-primary">
+                                            <i class="fa fa-android fa-5x"></i>
+                                            <br />
+                                            primary
+
+                                        </a>
+                                    </th>
+
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+
+                    </th>
+
+                </tr>
+            </tfoot>
+        </table>
+
+    </div>
+
+
+    <div class="container text-xs-center">
+        <div class="row">
+            <div class="col-lg-12">
+                <p>
+
+
+
+
+
+
+
+                    @*<a id="CustomerBtn" href="/Masters/CustomerAsync/CustomerData" data-toggle="modal" data-target="#myModal" data-remote="false" class="btn btn-squared-default btn-primary">
+                            <i class="fa fa-user fa-3x"></i>
+                            <br />
+                            Customer
+
+                        </a>
+
+
+                        <a href="/Masters/PaymentModeMasters/PaymentModeData" class="btn btn-squared-default btn-success" data-toggle="modal" data-target="#myModal" data-remote="false">
+                            <i class="fa fa-dollar-sign fa-3x"></i>
+                            <br />
+                            Payment Mode
+
+                        </a>*@
+
+
+                    <div class="form-group" style="padding:10px 0; text-align:right">
+                        <input id="submit" type="submit" value="CheckOut" class="btn btn-warning" style="padding:10px 20px;width:100% " />
+                    </div>
+
+
+                </p>
+            </div>
+        </div>
+
+        @* <div class="row">
+                <div class="col-lg-12">
+                    <h2>Square buttons - plain</h2>
+                    <p>
+                        <a href="#" class="btn btn-squared-default-plain btn-primary">
+                            <i class="fa fa-android fa-5x"></i>
+                            <br />
+                            primary
+
+                        </a>
+                        <a href="#" class="btn btn-squared-default-plain btn-success">
+                            <i class="fa fa-laptop fa-5x"></i>
+                            <br />
+                            success
+
+                        </a>
+                        <a href="#" class="btn btn-squared-default-plain btn-info">
+                            <i class="fa fa-compass fa-5x"></i>
+                            <br />
+                            info
+                            <br />
+                            Button
+                        </a>
+                        <a href="#" class="btn btn-squared-default-plain btn-warning">
+                            <i class="fa fa-pencil fa-5x"></i>
+                            <br />
+                            warning
+                            <br />
+                            Button
+                        </a>
+                        <a href="#" class="btn btn-squared-default-plain btn-danger">
+                            <i class="fa fa-car fa-5x"></i>
+                            <br />
+                            danger
+                            <br />
+                            Button
+                        </a>
+                    </p>
+                </div>
+            </div>*@
+    </div>
+
+
+
+
+
+
+
+
+    @Html.Partial("~/Views/Shared/_ReusableModal.cshtml");
+
+
+    @Html.Hidden("GetProductDataUrl", Url.Action("GetProductData", "Sales", new { Area = "POS", }))
+    @Html.Hidden("GetProductDetailsUrl", Url.Action("GetProductList", "Sales", new { Area = "POS", }))
+    @Html.Hidden("CreateURL", Url.Action("CreateInvoice", "Sales", new { Area = "POS", }))
+    @Html.Hidden("DetailURL", Url.Action("InvoiceReport", "Sales", new { Area = "POS", id = "__id__" }))
+
+
+}
+
+<style>
+    td {
+        white-space: normal !important;
+    }
+
+    .btn-squared-default {
+        width: 70px !important;
+        height: 70px !important;
+        font-size: 10px;
+    }
+
+        .btn-squared-default:hover {
+            border: 3px solid white;
+            font-weight: 300;
+        }
+
+    .btn-squared-default-plain {
+        width: 70px !important;
+        height: 70px !important;
+        font-size: 10px;
+    }
+
+        .btn-squared-default-plain:hover {
+            border: 0px solid white;
+        }
+
+    .table-wrapper-scroll-y {
+        display: block;
+        max-height: 400px;
+        overflow-y: auto;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        white-space: normal !important;
+    }
+
+    .Product, .category {
+        margin-top: 1px;
+        margin-bottom: 1px;
+        margin-left: 1px;
+        margin-right: 1px;
+        white-space: normal !important;
+        max-width: 70px;
+    }
+
+    .ActnBtn {
+        width: 100% !important;
+    }
+</style>
+
+<script>
+
+    $(document).ready(function () {
+
+
+
+    });
+
+
+</script>

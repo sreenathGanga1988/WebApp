@@ -1,0 +1,182 @@
+﻿@model WebApp.Models.DBModels.QuotationMaster
+<script>
+
+    function printDiv(divId) {
+        window.print();
+    }
+</script>
+<style>
+    .table > tbody > tr > .no-line {
+        border-top: none;
+    }
+
+    .table > thead > tr > .no-line {
+        border-bottom: none;
+    }
+
+    .table > tbody > tr > .thick-line {
+        border-top: 2px solid;
+    }
+</style>
+<link href="~/Content/Printcss.css?435345" rel="stylesheet" media="print" />
+@Html.HiddenFor(model => model.QuotationMasterid)
+<div id="printarea" class="container">
+    <div class="row">
+        <div class="col-12">
+
+            <div class="invoice-title row">
+                <h3>Quote #  @Model.QuoteNumber</h3>
+            </div>
+
+            <hr>
+            <div class="row">
+                <div class="col-6">
+                    <address>
+                        <strong>Billed To:</strong><br>
+                        @Model.Customer.CustomerName <br>
+                        @Model.Customer.CustomerDetails <br>
+                        @Model.Customer.PhoneNumber <br>
+                    </address>
+                </div>
+                <div class="col-6 text-right">
+
+                    <span class="float-right">
+
+                        <strong>Shipped To:</strong><br>
+                        @((Model.Customer.CustomerName + "").Trim()) <br>
+                        @((Model.Customer.CustomerDetails + "").Trim()) <br>
+                        @((Model.Customer.PhoneNumber + "").Trim()) <br>
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <address>
+                        <strong>Payment Method:</strong><br>
+                        Cash<br>
+                    </address>
+                </div>
+                <div class="col-6 text-right">
+                    <address>
+                        <strong>Invoice Date:</strong><br>
+                        @Model.QuoteDate  <br><br>
+                    </address>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Quotation summary</strong></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+
+                                    <td class="text-center"><strong>Category</strong></td>
+                                    <td class="text-center"><strong>Item Desc</strong></td>
+                                    <td class="text-center"><strong>Unit Price</strong></td>
+                                    <td class="text-center"><strong>Qty</strong></td>
+                                    <td class="text-center"><strong>Total Price</strong></td>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @{
+                                    Decimal totalprice = 0;
+
+                                }
+
+                                @foreach (WebApp.Models.DBModels.QuotationDetail purdet in Model.QuotationDetails)
+                                {
+                                    if (purdet.IsDeleted == false)
+                                    {
+                                        string product = (purdet.ItemName.ItemDesc) + " " + purdet.Specification;
+                                        <tr class='mycontainer' id='DetailRow' style="border-bottom: solid">
+
+                                            <td class='text-center'>@purdet.Category.CategoryName  </td>
+                                            <td class='text-center'>@product </td>
+                                            <td class='text-center'>@purdet.UnitPrice</td>
+                                            <td class='text-center'>@purdet.Qty</td>
+                                            <td class='text-center'>@purdet.TotalPrice</td>
+
+                                        </tr>
+
+                                        totalprice = totalprice + purdet.TotalPrice;
+
+                                    }
+
+                                }
+                                <tr>
+
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"><strong>Total Price</strong></td>
+                                    <td class="thick-line">@totalprice</td>
+
+                                </tr>
+                                <tr>
+
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"><strong>Total Discount</strong></td>
+                                    <td class="thick-line"> </td>
+
+                                </tr>
+                                <tr>
+
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"><strong>Total Paid</strong></td>
+                                    <td class="thick-line"> </td>
+
+                                </tr>
+                                <tr>
+
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"><strong>Total Discount</strong></td>
+                                    <td class="no-line"></td>
+
+                                </tr>
+                                <tr>
+
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line">0</td>
+                                    <td class="thick-line"><strong>Balance</strong></td>
+
+                                    <td class="thick-line"></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group NonPrintItem" style="padding:10px 0; text-align:right">
+        <a href="javascript:printDiv('printarea')">Print</a>
+    </div>
+
+</div>
+
+
+
+<p id="ActionDivid" class="NonPrintItem">
+    @Html.ActionLink("Edit", "Edit", new { id = Model.QuotationMasterid }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

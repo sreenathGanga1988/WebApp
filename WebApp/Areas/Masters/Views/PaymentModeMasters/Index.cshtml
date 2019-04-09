@@ -1,0 +1,43 @@
+﻿@model IEnumerable<WebApp.Models.DBModels.PaymentModeMaster>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table
+filtertable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentMode)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentMode)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.PaymentModeID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.PaymentModeID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.PaymentModeID })
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>  </tfoot>
+
+
+
+
+
+</table>

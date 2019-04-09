@@ -1,11 +1,8 @@
-﻿@model WebApp.Models.Store
-
+﻿@model WebApp.Models.DBModels.Store
 @{
     ViewBag.Title = "Details";
 }
-
 <h2>Details</h2>
-
 <div>
     <h4>Store</h4>
     <hr />
@@ -13,43 +10,33 @@
         <dt>
             @Html.DisplayNameFor(model => model.StoreName)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.StoreName)
         </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.StoreAddress)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.StoreAddress)
         </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.Street)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Street)
         </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.Phone)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Phone)
         </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.StoreTaxId)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.StoreTaxId)
         </dd>
-
     </dl>
 </div>
 <p>

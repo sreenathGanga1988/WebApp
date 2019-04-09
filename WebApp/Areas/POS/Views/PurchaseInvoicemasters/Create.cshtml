@@ -1,165 +1,278 @@
-﻿@model WebApp.Models.PurchaseInvoicemaster
+﻿@model WebApp.Areas.POS.Models.PurchaseViewModel
 
-@{
-    ViewBag.Title = "Create";
-}
-<script>
-
-    $(document).ready(function () {
-
-        $('.Chooosen').chosen()
-    });
-
-</script>
-<h2>Create</h2>
-
+<h4>Create Purchase Invoice</h4>
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
+
 
     <div class="form-horizontal">
 
-
-
         <div class="form-group">
 
-            <div class="col-md-6">
-                <label for="PurchaseInvoiceNum" class="col-md-5 control-label ">Purchase Invoice</label>
-                <input type="text" id="PurchaseInvoiceNum" class="form-control col-md-7" />
-            </div>
-            <div class="col-md-6">
-                <label for="CustomerID" class="col-md-5 control-label ">Supplier Name</label>
-                @Html.DropDownList("CustomerID", null, htmlAttributes: new { @class = "form-control col-md-7 Chooosen" })
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="PurchaseInvoiceNum" class="control-label ">Invoice</label>
+                    <input type="text" id="PurchaseInvoiceNum" required class="form-control " />
+                </div>
+                <div class="col-md-6">
+                    <label for="CustomerID" class=" control-label ">Supplier</label>
+                    <div class="input-group">
+                        @Html.DropDownList("CustomerID", null, htmlAttributes: new { @class = "form-control Chooosen" })
 
+                    </div>
+                </div>
+            </div>
+
+            <div class="row ">
+                <div class="col-md-6">
+                    <label for="InvoiceDate" class="control-label ">Invoice Date</label>
+                    <input type="text" id="InvoiceDate" class="form-control datepicker" />
+                </div>
+                <div class="col-md-6">
+                    <label for="PurchaseDate" class=" control-label ">Purchase Date</label>
+                    <input type="text" id="PurchaseDate" class="form-control datepicker" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="TotalBill" class=" control-label ">Total Bill</label>
+                    <input type="number" id="TotalBill" min="0" step="any" class="form-control" oninput="validity.valid||(value='');" />
+                </div>
+                <div class="col-md-6">
+                    <label for="TotalPaid" class="control-label ">Total Paid</label>
+                    <input type="number" id="TotalPaid" min="0" step="any" class="form-control" oninput="validity.valid||(value='');" />
+                </div>
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-6">
-                <label for="InvoiceDate" class="col-md-5 control-label ">Invoice Date</label>
+            <h4>
+                Product Wise Details
+            </h4>
+            <table class="table table-condensed table-bordered table-sm">
+                <tr>
+                    <th>Category</th>
+                    <th>Item Name</th>
+                    <th>Product Details</th>
+                    <th>Serial </th>
+                    <th style="width:100px">Total Qty</th>
+                    <th style="width:120px">Total Price</th>
+                    <th style="width:50px">CGST %</th>
+                    <th style="width:50px">SGST %</th>
+                </tr>
+                <tr class="mycontainer" id="mainrow">
+                    <td>
+                        @Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control Chooosen" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("ItemNameID", null, htmlAttributes: new { @class = "Chooosen form-control" })
+                    </td>
+                    <td>
+                        <textarea name="ProductDesc" id="ProductDesc" class="form-control"></textarea>
+                    </td>
+                    <td>
+                        <textarea name="SelialNum" id="SelialNum" class="form-control"></textarea>
+                    </td>
+                    <td>
 
-                <input type="text" id="InvoiceDate" class="form-control col-md-7" />
+                        <input type="number" id="TotalQty" style="width:100px" class="TotalQty  form-control" min="0" oninput="validity.valid || (value = '');" onchange="Calculate()" />
+                    </td>
+                    <td>
 
-
-            </div>
-            <div class="col-md-6">
-
-                <label for="PurchaseDate" class="col-md-5 control-label ">Purchase Date</label>
-
-                <input type="text" id="PurchaseDate" class="form-control col-md-7" />
-
-
-            </div>
+                        <input type="number" id="TotalPrice" style="width:120px" class="TotalPrice form-control" oninput="validity.valid||(value='');" onchange="Calculate()" />
+                    </td>
+                    <td style="width:50px">
+                        <input type="number" id="CGSTPercent" style="width:50px" class="CGSTPercent form-control" value="9" oninput="validity.valid||(value='');" onchange="Calculate()" />
+                    </td>
+                    <td style="width:50px">
+                        <input type="number" id="SGSTPercent" style="width:50px" class="SGSTPercent form-control " value="9" oninput="validity.valid||(value='');" onchange="Calculate()" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>Unit Price</th>
+                    <td> <input type="text" id="UnitCP" class="UnitCP " readonly value="0" /></td>
+                    <th>Selling Price</th>
+                    <td> <input type="number" id="UnitSP" class="UnitSP " value="0" /> </td>
+                    <th>Total Qty</th>
+                    <th>Total Price</th>
+                    <td colspan="2">
+                        <input type="button" id="add" value="add" class="btn btn-success" />
+                    </td>
+                </tr>
+            </table>
         </div>
+
         <div class="form-group">
-            <div class="col-md-6">
-                <label for="TotalBill" class="col-md-5 control-label ">Total Bill</label>
-                <input type="text" id="TotalBill" class="form-control col-md-7" />
+            <table id="detailtable" class="table table-responsive table-bordered ">
+                <thead>
 
-            </div>
-            <div class="col-md-6">
-
-                <label for="TotalPaid" class="col-md-5 control-label ">Total Paid</label>
-                <input type="text" id="TotalPaid" class="form-control col-md-7" />
-
-            </div>
-
+                    <tr>
+                        <th style="display:none;">DetID</th>
+                        <th style="display:none;">CategoryID</th>
+                        <th style="display:none;">ItemNameID</th>
+                        <th>Category</th>
+                        <th>ItemName</th>
+                        <th>ProductDetails</th>
+                        <th>Serial </th>
+                        <th>Total Qty</th>
+                        <th>Total Price</th>
+                        <th>CGST %</th>
+                        <th>SGST %</th>
+                        <th>Unit Price</th>
+                        <th>Selling Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
 
-
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+        <div class="form-group" style="padding:10px 0; text-align:right">
+            <input id="submit" type="submit" value="Save Purchase" class="btn btn-warning" style="padding:10px 20px" />
         </div>
     </div>
 
+    @*@Html.Partial("~/Areas/Masters/Views/CustomerAsync/CustomerAddPartial.cshtml");*@
 
-    <div class="details">
-        <h2>
-           Product Wise Details
-        </h2>
-        <table class="table table-responsive">
-            <tr>
-                <td>Category</td>
-                <td>Item Name</td>
-                <td>Product Details</td>
-                <td  style="width:50px">Total Qty</td>
-                <td  style="width:70px">Total Price</td>
-                <td style="width:50px">CGST %</td>
-                <td style="width:50px">SGST %</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr class="mycontainer" id="mainrow">
-                <td>
-                    <select id="CategoryID" class="CategoryID form-control" onchange="loadValues(this)">
-                        <option>Select</option>
-                    </select>
-                    <span class="error">Select Atc</span>
-                </td>
-
-                <td>
-                    <select id="ItemID" class="ItemID form-control">
-                        <option>Select</option>
-                    </select>
-                    <span class="error">Select Atc</span>
-                </td>
-                <td>
-
-
-                    <input type="text" id="ProductDesc" class="ProductDesc form-control" />
-                    <span class="error"> ProductDesc required</span>
-
-
-
-                </td>
-                
-                <td>
-
-
-                    <input type="text" id="TotalQty" class="TotalQty form-control" />
-                    <span class="error"> TotalQty required</span>
-
-
-
-                </td>
-                <td>
-
-
-                    <input type="text" id="TotalPrice" class="TotalQty form-control" />
-                    <span class="error"> Total Price required</span>
-
-
-
-                </td>
-                <td style="width:50px">
-                    <input type="text" id="CGSTPercent" class="CGSTPercent form-control"  />
-                    <span class="error">CGST % required</span>
-                </td>
-                <td style="width:50px">
-                    <input type="text" id="SGSTPercent" class="rate form-control" />
-                    <span class="error">SGST % required</span>
-                </td>
-                <td>
-                    <input type="button" id="add" value="add" style="width:80px" class="btn btn-success" />
-                </td>
-            </tr>
-        </table>
-        <div id="orderItems">
-            <table class="table table-responsive" id="orderdetailsItems"><tbody></tbody></table>
-            <span id="orderItemError" style="color:red"></span>
-        </div>
-        <div style="padding:10px 0; text-align:right">
-            @*<input id="submit" type="button" value="Save Order" class="btn btn-warning" style="padding:10px 20px" />*@
-
-            <input id="submit" type="button" value="Save Order" class="btn btn-warning" style="padding:10px 20px" />
-
-        </div>
-
-    </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+<script>
+    $(document).ready(function () {
+
+        $.unblockUI()
+
+        $("#add").on("click", function () {
+
+            var categoryName = $("#CategoryID option:selected").text()
+            var categoryid = $("#CategoryID option:selected").val()
+            var ItemName = $("#ItemNameID option:selected").text()
+            var Itemid = $("#ItemNameID option:selected").val()
+
+            var ProductDetails = $("#ProductDesc").val();
+            var Serial = $("#SelialNum").val();
+            var TotalQty = $("#TotalQty").val();
+            var TotalPrice = $("#TotalPrice").val();
+            var CGSTPercent = $("#CGSTPercent").val();
+            var SGSTPercent = $("#SGSTPercent").val();
+            var UnitPrice = $("#UnitCP").val();
+            var SellingPrice = $("#UnitSP").val();
+
+            var markup = " <tr class='mycontainer' id='DetailRow' style=\"border-bottom: solid\"> \
+                    <td style=\"display:none;\" class= 'PurchasedetailViewModelID'>0</td > \
+                    <td style=\"display:none;\" class= 'CategoryID'>" + categoryid + "</td > \
+                    <td style=\"display:none;\" class= 'ItemNameID'>" + Itemid + "</td> \
+                    <td class= 'Category'>" + categoryName + "</td> \
+                    <td class= 'ItemName'>" + ItemName + "</td> \
+                    <td class= 'ProductDetails'>" + ProductDetails + "</td> \
+                    <td class= 'Serial'>" + Serial + " </td> \
+                    <td class= 'TotalQty'>" + TotalQty + "</td> \
+                    <td class='TotalPrice'>" + TotalPrice + "</td> \
+                    <td class='CGSTPercent'>" + CGSTPercent + "</td> \
+                    <td class='SGSTPercent'>" + SGSTPercent + "</td> \
+                    <td class='UnitPrice'>" + UnitPrice + "</td> \
+                    <td class='SellingPrice'>" + SellingPrice + "</td> \
+                    <td><img src=\"/Content/Images/download.jpg\" style=\"width: 20px;height: 20px;\" class='delete' /></td></tr > ";
+            $('#detailtable tbody').append(markup);
+
+            $("#ProductDesc").val("")
+            $("#SelialNum").val("")
+            $("#TotalQty").val("0")
+            $("#TotalPrice").val("0")
+            $("#UnitCP").val("0")
+            $("#UnitSP").val("0")
+
+        });
+
+        $("#submit").on("click", function () {
+            var valid = this.form.checkValidity();
+
+            if (valid) {
+                event.preventDefault();
+                $.blockUI()
+
+                var isAllValid = true;
+                var list = [];
+                $('#detailtable tbody tr').each(function () {
+
+                    var orderItem = {
+                        PurchasedetailViewModelID: $('.PurchasedetailViewModelID', this).html(),
+                        categoryid: $('.CategoryID', this).html(),
+                        ItemNameID: parseFloat($('.ItemNameID', this).html()),
+                        ProductDetails: $('.ProductDetails', this).html(),
+                        Serial: $('.Serial', this).html(),
+                        TotalQty: $('.TotalQty', this).html(),
+                        TotalPrice: parseFloat($('.TotalPrice', this).html()),
+                        CGSTPercent: $('.CGSTPercent', this).html(),
+                        SGSTPercent: parseFloat($('.SGSTPercent', this).html()),
+                        UnitPrice: $('.UnitPrice', this).html(),
+                        SellingPrice: $('.SellingPrice', this).html(),
+
+                    }
+                    list.push(orderItem);
+                });
+                debugger
+                if (isAllValid) {
+                    var data = {
+                        SupplierInvoice: $('#PurchaseInvoiceNum').val().trim(),
+                        CustomerID: $("#CustomerID option:selected").val(),
+                        SupplierInvoiceDate: $('#InvoiceDate').datepicker('getDate'),
+                        PurchaseDate: $('#PurchaseDate').datepicker('getDate'),
+                        InvoiceValue: $('#TotalBill').val(),
+                        PaidValue: $('#TotalPaid').val(),
+                        purchasedetailViewModels: list,
+                    }
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/POS/PurchaseInvoicemasters/Create',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json',
+                        success: function (data) {
+                            if (data.status) {
+
+                                list = [];
+                                $('#PurchaseInvoiceNum,#TotalBill,#TotalPaid').val('');
+                                $('#orderdetailsItems').empty();
+
+                                $.unblockUI()
+                                var newUrl = '@Url.Action("Index", "PurchaseInvoicemasters")';
+
+
+                                bootbox.alert("Purchase Successfully saved!", function () { window.location.href = newUrl; });
+
+                            }
+                            else {
+                                alert('Error');
+                            }
+                            $('#submit').val('Save');
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            $('#submit').val('Save');
+                        }
+                    });
+
+                }
+            }
+        });
+
+        $('#detailtable').on('click', '.delete', function () {
+            $(this).parents('tr').remove();
+        });
+
+    });
+    function Calculate() {
+
+        var TotalQty = $("#TotalQty").val() || 0;
+        var TotalPrice = $("#TotalPrice").val();
+        var unitprice = parseFloat(TotalPrice.toString()) / parseFloat(TotalQty.toString())
+        var unitSellingprice = 1.25 * unitprice
+
+
+
+        $("#UnitCP").val(Number((unitprice).toFixed(2)));
+        $("#UnitSP").val(Number((unitSellingprice).toFixed(2)));
+
+    }
+</script>

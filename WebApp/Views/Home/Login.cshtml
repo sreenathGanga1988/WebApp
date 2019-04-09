@@ -1,0 +1,200 @@
+﻿@model WebApp.Models.LoginPageViewModel
+@*@{
+
+        Layout = null;
+    }
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+
+
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/bootbox.min.js"></script>
+        <style type="text/css">
+            .bs-example {
+                height: 220px;
+            }
+
+            .centerlook {
+                padding-left: 400px;
+                font-weight: bold;
+                width: 1000px;
+            }
+
+            .error {
+                padding-left: 400px;
+                font-weight: bold;
+                width: 1000px;
+                color: red;
+            }
+
+            .loginbtn {
+                padding-left: 500px;
+            }
+        </style>
+
+    </head>
+    <body>
+
+        @using (Html.BeginForm())
+        {
+            <div class="bs-example" style="border:2px solid gray;">
+
+                <div class="form-group centerlook">
+                    <h1> Login </h1>
+                </div>
+                <div class="form-group centerlook">
+                    <label>User Name: </label>
+                    @Html.EditorFor(model => model.UserName)*
+                    @Html.ValidationMessageFor(model => model.UserName)
+                </div>
+                <div class="form-group centerlook">
+                    <label>Password:</label>
+                    @Html.EditorFor(model => model.Password) *
+                    @Html.ValidationMessageFor(model => model.Password)
+
+                </div>
+                <div class="form-group error">
+                    @if (@ViewBag.Failedcount != null)
+                    {
+
+                        <label> Failed Attempt count is: @ViewBag.Failedcount</label>
+                    }
+
+                    @if (@ViewBag.NotValidUser != null)
+                    {
+
+                        <label> @ViewBag.NotValidUser</label>
+                    }
+                </div>
+                <div class="loginbtn">
+
+                    <input type="submit" value="Login" class="btn btn-primary" />
+
+                </div>
+            </div>
+        }
+    </body>
+    </html>*@
+
+
+@{
+    ViewBag.Title = "Login";
+    Layout = null;
+}
+<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/fontawesome-all.min.css" rel="stylesheet" />
+<link href="~/Content/Login.css" rel="stylesheet" />
+<link href="~/Content/Login.Util.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/Login.js"></script>
+
+
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-form-title" style="background-image: url(); background-image: url('../../Content/Images/bg-01.jpg'); ">
+                <span class="login100-form-title-1">
+                    Sign In
+                </span>
+            </div>
+
+
+
+
+            @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "login100-form validate-form" }))
+            {
+                <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
+                    <span class="label-input100">Username</span>
+                    <input class="input100" type="text" name="UserName" placeholder="Enter username">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
+                    <span class="label-input100">Password</span>
+                    <input class="input100" type="password" name="Password" placeholder="Enter password">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="flex-sb-m w-full p-b-30">
+                    <div class="contact100-form-checkbox">
+                        <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+                        <label class="label-checkbox100" for="ckb1">
+                            Remember me
+                        </label>
+                    </div>
+
+                    <div>
+                        <a href="#" class="txt1">
+                            Forgot Password?
+                        </a>
+                    </div>
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn">
+                        Login
+                    </button>
+                </div>
+            }
+
+
+
+
+
+
+
+
+            <footer><a href="#0">Create an account</a></footer>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+<style>
+    footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 40px;
+        margin-left: -10px;
+        line-height: 29px;
+        text-align: center;
+        cursor: pointer;
+        border-top: 1px solid rgba(117, 117, 117, 0.15);
+    }
+
+        footer a {
+            display: block;
+            text-decoration: none;
+            font-size: 16px;
+            color: inherit;
+        }
+
+            footer a:hover {
+                color: rgba(0,0,0,0.9);
+                text-decoration: underline;
+            }
+
+            footer a:focus {
+                outline: none;
+            }
+</style>

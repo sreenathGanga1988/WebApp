@@ -1,122 +1,198 @@
-﻿@model WebApp.Models.PurchaseInvoicemaster
+﻿@model WebApp.Models.DBModels.PurchaseInvoiceMaster
+@using WebApp.Models
+<script>
+</script>
+<style>
+    .table > tbody > tr > .no-line {
+        border-top: none;
+    }
 
-@{
-    ViewBag.Title = "Details";
-}
+    .table > thead > tr > .no-line {
+        border-bottom: none;
+    }
 
-<h2>Details</h2>
+    .table > tbody > tr > .thick-line {
+        border-top: 2px solid;
+    }
+</style>
+@Html.HiddenFor(model => model.PurchaseInvoicemasterID)
+<div class="container">
+    <div class="row">
+        <div class="col-12">
 
-<div>
-    <h4>PurchaseInvoicemaster</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Customer.CustomerName)
-        </dt>
+            <div class="invoice-title row">
+                <h3>Pur # @Model.PurchaseInvoiceNum </h3>
+            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Customer.CustomerName)
-        </dd>
+            <hr>
+            <div class="row">
+                <div class="col-6">
+                    <address>
+                        <strong>Purchased from:</strong><br>
+                        @Model.Customer.CustomerName <br>
+                        @Model.Customer.CustomerDetails <br>
+                        @Model.Customer.PhoneNumber <br>
+                    </address>
+                </div>
+                <div class="col-6 text-right">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Store.StoreName)
-        </dt>
+                    <span class="float-right">
 
-        <dd>
-            @Html.DisplayFor(model => model.Store.StoreName)
-        </dd>
+                        <strong>Shipped To:</strong><br>
+                        @((Model.Store.StoreName + "").Trim()) <br>
+                        @((Model.Store.Street + "").Trim())<br>
+                        @((Model.Store.StoreTaxId + "").Trim())<br>
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <address>
+                        <strong>Payment Method:</strong><br>
+                        Cash<br>
+                        Credit
+                    </address>
+                </div>
+                <div class="col-6 text-right">
+                    <address>
+                        <strong>Order Date:</strong><br>
+                        @Model.PurchaseDate <br><br>
+                    </address>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.PurchaseInvoiceNum)
-        </dt>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Purchase summary</strong></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
 
-        <dd>
-            @Html.DisplayFor(model => model.PurchaseInvoiceNum)
-        </dd>
+                                    <td class="text-center"><strong>Category</strong></td>
+                                    <td class="text-center"><strong>Item Desc</strong></td>
+                                    <td class="text-center"><strong>Serial</strong></td>
+                                    <td class="text-center"><strong>Qty</strong></td>
+                                    <td class="text-center"><strong>Total Price</strong></td>
+                                    <td class="text-center"><strong>Unit Price</strong></td>
+                                    <td class="text-center"><strong>Tax</strong></td>
+                                    <td class="text-center"><strong>Selling Price</strong></td>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.InvoiceDate)
-        </dt>
+                                @{
+                                    Decimal totalprice = 0;
 
-        <dd>
-            @Html.DisplayFor(model => model.InvoiceDate)
-        </dd>
+                                }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.PurchaseDate)
-        </dt>
+                                @foreach (WebApp.Models.DBModels.PurchaseInvoiceDetail purdet in Model.PurchaseInvoiceDetails)
+                                {
+                                    if (purdet.IsDeleted == false)
+                                    {
+                                        string product = purdet.ItemName.ItemDesc ?? "" + " " + @purdet.ProductName;
+                                        <tr class='mycontainer' id='DetailRow' style="border-bottom: solid">
 
-        <dd>
-            @Html.DisplayFor(model => model.PurchaseDate)
-        </dd>
+                                            <td class='text-center'>@purdet.Category.CategoryName </td>
+                                            <td class='text-center'>@product </td>
+                                            <td class='text-center'>@purdet.SerialNum </td>
+                                            <td class='text-center'>@purdet.Qty</td>
+                                            <td class='text-center'>@purdet.TotalPrice</td>
+                                            <td class='text-center'>@purdet.UnitCP</td>
+                                            <td class='text-center'> @purdet.SGSTPercent +" /"+@purdet.CGSTPercent </td>
+                                            <td class='text-center'>@purdet.UnitSP</td>
+                                        </tr>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalPaid)
-        </dt>
+                                        totalprice = totalprice + purdet.TotalPrice;
 
-        <dd>
-            @Html.DisplayFor(model => model.TotalPaid)
-        </dd>
+                                    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalBill)
-        </dt>
+                                }
+                                <tr>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"><strong>Total Price</strong></td>
+                                    <td class="thick-line">@totalprice</td>
+                                    <td class="thick-line"></td>
+                                </tr>
+                                <tr>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"><strong>Total Tax</strong></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.TotalBill)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalDiscount)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TotalDiscount)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.RoundOffAmount)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.RoundOffAmount)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsCommited)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsCommited)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsDeleted)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DeletedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DeletedBy)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DeletedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DeletedDate)
-        </dd>
-
-    </dl>
+    @if (Model.IsCommited != true)
+    {
+        <div class="form-group NonPrintItem" style="padding:10px 0; text-align:right">
+            <input id="submit" type="submit" value="Confirm Purchase" class="btn btn-warning" style="padding:10px 20px" />
+        </div>
+    }
 </div>
-<p>
+
+<p id="ActionDivid" class="NonPrintItem">
     @Html.ActionLink("Edit", "Edit", new { id = Model.PurchaseInvoicemasterID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+<script>
+
+    $(document).ready(function () {
+
+        $.unblockUI()
+
+        $("#submit").on("click", function () {
+            var id123 = $("#PurchaseInvoicemasterID").val();
+            alert(id123)
+
+            event.preventDefault();
+            $.blockUI()
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '/POS/PurchaseInvoicemasters/Commit',
+                data: { 'id': id123 },
+                //contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data.status) {
+
+                        $.unblockUI()
+
+                        bootbox.alert("Purchase Confirmed and Stock Updated!");
+                    }
+                    else {
+                        alert('Error');
+                    }
+                    location.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                    $('#submit').val('Save');
+                }
+            });
+
+        });
+
+    });
+</script>

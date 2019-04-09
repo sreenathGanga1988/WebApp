@@ -1,7 +1,8 @@
-﻿@model IEnumerable<WebApp.Models.ItemName>
+﻿@model IEnumerable<WebApp.Models.DBModels.ItemName>
 
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Index</h2>
@@ -11,6 +12,9 @@
 </p>
 <table class="table">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Category.CategoryName)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.ItemDesc)
         </th>
@@ -22,6 +26,9 @@
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category.CategoryName)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.ItemDesc)
         </td>

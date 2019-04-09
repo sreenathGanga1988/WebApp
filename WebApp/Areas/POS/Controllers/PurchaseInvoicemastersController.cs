@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
+using WebApp.Areas.POS.Models;
+using WebApp.Extensions;
 using WebApp.Models;
+using WebApp.Models.DBModels;
 
 namespace WebApp.Areas.POS.Controllers
 {
+    [Authorize]
     public class PurchaseInvoicemastersController : Controller
     {
         private WebAppContext db = new WebAppContext();
@@ -18,7 +18,7 @@ namespace WebApp.Areas.POS.Controllers
         public ActionResult Index()
         {
             var purchaseInvoicemasters = db.PurchaseInvoicemasters.Include(p => p.Customer).Include(p => p.Store);
-            return View(purchaseInvoicemasters.ToList());
+            return View(purchaseInvoicemasters.ToList().OrderByDescending(u => u.PurchaseInvoicemasterID));
         }
 
         // GET: POS/PurchaseInvoicemasters/Details/5
@@ -36,31 +36,24 @@ namespace WebApp.Areas.POS.Controllers
             return View(purchaseInvoicemaster);
         }
 
-        // GET: POS/PurchaseInvoicemasters/Create
         public ActionResult Create()
         {
             ViewBag.CustomerID = new SelectList(db.Customers, "CustomerID", "CustomerName");
             ViewBag.StoreID = new SelectList(db.Stores, "StoreID", "StoreName");
-            return View();
+            ViewBag.CategoryID = new SelectList(db.Categories, "Id", "CategoryName");
+            ViewBag.ItemNameID = new SelectList(db.ItemNames, "Id", "ItemDesc");
+            Models.PurchaseViewModel mdl = new Models.PurchaseViewModel();
+            return View(mdl);
         }
 
-        // POST: POS/PurchaseInvoicemasters/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PurchaseInvoicemasterID,PurchaseInvoiceNum,StoreID,CustomerID,InvoiceDate,PurchaseDate,TotalPaid,TotalBill,TotalDiscount,RoundOffAmount,IsCommited,IsDeleted,DeletedBy,DeletedDate")] PurchaseInvoiceMaster purchaseInvoicemaster)
+        public JsonResult Create(Models.PurchaseViewModel order)
         {
-            if (ModelState.IsValid)
-            {
-                db.PurchaseInvoicemasters.Add(purchaseInvoicemaster);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.CustomerID = new SelectList(db.Customers, "CustomerID", "CustomerName", purchaseInvoicemaster.CustomerID);
-            ViewBag.StoreID = new SelectList(db.Stores, "StoreID", "StoreName", purchaseInvoicemaster.StoreID);
-            return View(purchaseInvoicemaster);
+            bool status = false;
+            Repository.PurchaseInvoiceRepository purchaseInvoiceRepository = new Repository.PurchaseInvoiceRepository();
+            purchaseInvoiceRepository.AddPurchaseInvoicemaster(order);
+            status = true;
+            return new JsonResult { Data = new { status = status } };
         }
 
         // GET: POS/PurchaseInvoicemasters/Edit/5
@@ -75,27 +68,34 @@ namespace WebApp.Areas.POS.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.CategoryID = new SelectList(db.Categories, "Id", "CategoryName");
+            ViewBag.ItemNameID = new SelectList(db.ItemNames, "Id", "ItemDesc");
             ViewBag.CustomerID = new SelectList(db.Customers, "CustomerID", "CustomerName", purchaseInvoicemaster.CustomerID);
             ViewBag.StoreID = new SelectList(db.Stores, "StoreID", "StoreName", purchaseInvoicemaster.StoreID);
             return View(purchaseInvoicemaster);
         }
 
         // POST: POS/PurchaseInvoicemasters/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PurchaseInvoicemasterID,PurchaseInvoiceNum,StoreID,CustomerID,InvoiceDate,PurchaseDate,TotalPaid,TotalBill,TotalDiscount,RoundOffAmount,IsCommited,IsDeleted,DeletedBy,DeletedDate")] PurchaseInvoiceMaster purchaseInvoicemaster)
+        public JsonResult Edit(PurchaseViewModel purchaseViewModel)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(purchaseInvoicemaster).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.CustomerID = new SelectList(db.Customers, "CustomerID", "CustomerName", purchaseInvoicemaster.CustomerID);
-            ViewBag.StoreID = new SelectList(db.Stores, "StoreID", "StoreName", purchaseInvoicemaster.StoreID);
-            return View(purchaseInvoicemaster);
+            bool status = false;
+            Repository.PurchaseInvoiceRepository purchaseInvoiceRepository = new Repository.PurchaseInvoiceRepository();
+            purchaseInvoiceRepository.UpdatePurchaseInvoicemaster(purchaseViewModel);
+            status = true;
+            return new JsonResult { Data = new { status = status } };
+        }
+
+        [HttpPost]
+        public JsonResult Commit(int id = 0)
+        {
+            bool status = false;
+            Repository.PurchaseInvoiceRepository purchaseInvoiceRepository = new Repository.PurchaseInvoiceRepository();
+            purchaseInvoiceRepository.CommitAction(false, id);
+            status = true;
+            return new JsonResult { Data = new { status = status } };
         }
 
         // GET: POS/PurchaseInvoicemasters/Delete/5
@@ -115,7 +115,6 @@ namespace WebApp.Areas.POS.Controllers
 
         // POST: POS/PurchaseInvoicemasters/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             PurchaseInvoiceMaster purchaseInvoicemaster = db.PurchaseInvoicemasters.Find(id);

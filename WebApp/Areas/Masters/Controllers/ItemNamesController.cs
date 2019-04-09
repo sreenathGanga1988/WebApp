@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebApp.Models;
+using WebApp.Models.DBModels;
 
 namespace WebApp.Areas.Masters.Controllers
 {
@@ -16,19 +16,20 @@ namespace WebApp.Areas.Masters.Controllers
         private WebAppContext db = new WebAppContext();
 
         // GET: Masters/ItemNames
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            return View(await db.ItemNames.ToListAsync());
+            var itemNames = db.ItemNames.Include(i => i.Category);
+            return View(itemNames.ToList());
         }
 
         // GET: Masters/ItemNames/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ItemName itemName = await db.ItemNames.FindAsync(id);
+            ItemName itemName = db.ItemNames.Find(id);
             if (itemName == null)
             {
                 return HttpNotFound();
@@ -39,65 +40,69 @@ namespace WebApp.Areas.Masters.Controllers
         // GET: Masters/ItemNames/Create
         public ActionResult Create()
         {
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "CategoryName");
             return View();
         }
 
         // POST: Masters/ItemNames/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,ItemDesc,Isactive")] ItemName itemName)
+        public ActionResult Create([Bind(Include = "Id,ItemDesc,CategoryId,Isactive")] ItemName itemName)
         {
             if (ModelState.IsValid)
             {
                 db.ItemNames.Add(itemName);
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "CategoryName", itemName.CategoryId);
             return View(itemName);
         }
 
         // GET: Masters/ItemNames/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ItemName itemName = await db.ItemNames.FindAsync(id);
+            ItemName itemName = db.ItemNames.Find(id);
             if (itemName == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "CategoryName", itemName.CategoryId);
             return View(itemName);
         }
 
         // POST: Masters/ItemNames/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,ItemDesc,Isactive")] ItemName itemName)
+        public ActionResult Edit([Bind(Include = "Id,ItemDesc,CategoryId,Isactive")] ItemName itemName)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(itemName).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "CategoryName", itemName.CategoryId);
             return View(itemName);
         }
 
         // GET: Masters/ItemNames/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ItemName itemName = await db.ItemNames.FindAsync(id);
+            ItemName itemName = db.ItemNames.Find(id);
             if (itemName == null)
             {
                 return HttpNotFound();
@@ -108,11 +113,11 @@ namespace WebApp.Areas.Masters.Controllers
         // POST: Masters/ItemNames/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            ItemName itemName = await db.ItemNames.FindAsync(id);
+            ItemName itemName = db.ItemNames.Find(id);
             db.ItemNames.Remove(itemName);
-            await db.SaveChangesAsync();
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
 

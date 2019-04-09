@@ -1,0 +1,27 @@
+﻿@model IEnumerable<WebApp.Models.DBModels.PaymentModeMaster>
+<div class="table-wrapper-scroll-y">
+
+    <div id="PaymentModeTable" class="btn-toolbar  table-wrapper-scroll-y ">
+        @foreach (var item in Model)
+        {
+            <a id=@item.PaymentModeID href="#" class="btn btn-squared-default-plain btn-primary PaymentMode">
+                @*<i class="fa fa-android fa-5x"></i>*@
+                <br />
+                @item.PaymentMode.ToString()
+
+            </a>
+        }
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+

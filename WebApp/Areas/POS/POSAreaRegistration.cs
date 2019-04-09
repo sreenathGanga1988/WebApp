@@ -2,17 +2,17 @@
 
 namespace WebApp.Areas.POS
 {
-    public class POSAreaRegistration : AreaRegistration 
+    public class POSAreaRegistration : AreaRegistration
     {
-        public override string AreaName 
+        public override string AreaName
         {
-            get 
+            get
             {
                 return "POS";
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context) 
+        public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
                 "POS_default",

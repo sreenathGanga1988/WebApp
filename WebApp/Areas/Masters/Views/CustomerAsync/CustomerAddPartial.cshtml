@@ -1,0 +1,85 @@
+﻿<div class="modal fade" id="CustomerModal" tabindex="-1" role="dialog" aria-labelledby="CustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CustomerModalLabel">Add Customer</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="UserName">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Phone Number:</label>
+                        <input type="text" class="form-control" id="PhoneNumber">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Address:</label>
+                        <input type="text" class="form-control" id="CustomerDetails">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Tax Code:</label>
+                        <input type="text" class="form-control" id="BarcodeNum">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="Save" type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $.unblockUI()
+        $("#Save").click(function () {
+
+            $.blockUI()
+
+            var Customer = {
+                CustomerName: $('#UserName').val(),
+                PhoneNumber: $('#PhoneNumber').val(),
+                CustomerDetails: $('#CustomerDetails').val(),
+                BarcodeNum: $('#UserName').val(),
+                PaymentDue: 0,
+                Discount: 0,
+                AddedBy: "Sree",
+                AddedDate: new Date(),
+                Isactive: true,
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("CreateCustomer", "CustomerAsync", new { Area = "Masters",})',
+                data: JSON.stringify(Customer),
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data.status) {
+
+                        $('#UserName,#PhoneNumber,#CustomerDetails').val('');
+
+                        $.unblockUI()
+                        alert('Successfully saved');
+
+                    }
+                    else {
+                        alert('Error');
+                    }
+                    $('#submit').val('Save');
+                },
+                error: function (error) {
+                    console.log(error);
+                    $('#submit').val('Save');
+                }
+            });
+
+        });
+
+    });
+</script>

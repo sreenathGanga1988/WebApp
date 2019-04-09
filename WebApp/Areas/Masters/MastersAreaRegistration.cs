@@ -2,17 +2,17 @@
 
 namespace WebApp.Areas.Masters
 {
-    public class MastersAreaRegistration : AreaRegistration 
+    public class MastersAreaRegistration : AreaRegistration
     {
-        public override string AreaName 
+        public override string AreaName
         {
-            get 
+            get
             {
                 return "Masters";
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context) 
+        public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
                 "Masters_default",

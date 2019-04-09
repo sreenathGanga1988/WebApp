@@ -1,0 +1,230 @@
+﻿@model WebApp.Areas.POS.Models.SalesViewModal
+@{
+    ViewBag.Title = "Sales Invoice :" + @Model.InvoiceMaster.InvoiceNum;
+}
+<script>
+
+    function printDiv(divId) {
+        window.print();
+    }
+</script>
+<link href="~/Content/Printcss.css" rel="stylesheet" media="print" />
+<style>
+    .table > tbody > tr > .no-line {
+        border-top: none;
+    }
+
+    .table > thead > tr > .no-line {
+        border-bottom: none;
+    }
+
+    .table > tbody > tr > .thick-line {
+        border-top: 2px solid;
+        background-color: Highlight;
+    }
+
+    .table > tbody > tr > .thin-line {
+        border-top: 0.25px solid;
+    }
+</style>
+@Html.HiddenFor(model => model.InvoiceMaster.InvoicemasterID)
+<div style="border: 1px solid" class="container">
+    <div class="row">
+        <div class="col-12">
+
+            <div>
+                <p><h2 style="text-align:center"> <strong>@Model.InvoiceMaster.Store.StoreName  </strong>  </h2></p>
+                <p><h5 style="text-align:center"> @Model.InvoiceMaster.Store.StoreAddress +@Model.InvoiceMaster.Store.Street  </h5></p>
+                <p><h6 style="text-align:center"> @Model.InvoiceMaster.Store.StoreTaxId    </h6></p>
+            </div>
+
+            <div class="invoice-title row">
+                <h3>Invoice # @Model.InvoiceMaster.InvoiceNum </h3>
+            </div>
+
+            <hr>
+            <div class="row">
+                <div class="col-6">
+                    <address>
+                        <strong>Billed To:</strong><br>
+                        @Model.InvoiceMaster.Customer.CustomerName <br>
+                        @Model.InvoiceMaster.Customer.CustomerDetails <br>
+                        @Model.InvoiceMaster.Customer.PhoneNumber <br>
+                    </address>
+                </div>
+                <div class="col-6 text-right">
+
+                    <span class="float-right">
+
+                        <strong>Invoiced By:</strong><br>
+                        @Model.InvoiceMaster.AddedUser  <br>
+                        @Model.InvoiceMaster.AddedDate <br>
+                        @Model.InvoiceMaster.Store.StoreName <br>
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <address>
+                        <strong>Payment Method:</strong><br>
+                        @Model.InvoiceMaster.PaymentModeMaster.PaymentMode.Trim()<br>
+                    </address>
+                </div>
+                <div class="col-6 text-right">
+                    <address>
+                        <strong>Invoice Date:</strong><br>
+                        @Model.InvoiceMaster.InvoiceDate  <br><br>
+                    </address>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Invoice summary</strong></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+
+                                    <td class="text-center"><strong>Category</strong></td>
+                                    <td class="text-center"><strong>Item Desc</strong></td>
+                                    <td class="text-center"><strong>Serial</strong></td>
+                                    <td class="text-center"><strong>Qty</strong></td>
+                                    <td class="text-center"><strong>Unit Price</strong></td>
+                                    <td class="text-center"><strong>Total Price</strong></td>
+                                    <td class="text-center"><strong>CGST %</strong></td>
+                                    <td class="text-center"><strong>SGST %</strong></td>
+                                    <td class="text-center"><strong>CGST</strong></td>
+                                    <td class="text-center"><strong>SGST</strong></td>
+                                    <td class="text-center"><strong>Net</strong></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @{
+                                    Decimal totalprice = 0;
+
+                                }
+
+                                @foreach (WebApp.Models.DBModels.InvoiceDetail purdet in Model.InvoiceMaster.InvoiceDetails)
+                                {
+                                    if (purdet.IsDeleted == false)
+                                    {
+                                        string product = purdet.Product.Category.CategoryName ?? "" + purdet.Product.ItemName.ItemDesc ?? "" + " " + @purdet.Product.ProductName;
+                                        <tr class='mycontainer' id='DetailRow' style="border-bottom: solid">
+
+                                            <td class='text-center'>@purdet.Product.Category.CategoryName  </td>
+                                            <td class='text-center'>@product </td>
+                                            <td class='text-center'>@purdet.Product.SerialNum </td>
+                                            <td class='text-center'>@purdet.Qty</td>
+                                            <td class='text-center'>@purdet.DisplayUnitPrice </td>
+                                            <td class='text-center'>@purdet.DisplayTotalPrice </td>
+                                            <td class='text-center'>@purdet.CGSTPercent </td>
+                                            <td class='text-center'>@purdet.SGSTPercent </td>
+                                            <td class='text-center'>@purdet.TotalCGSTValue </td>
+                                            <td class='text-center'>@purdet.TotalSGSTValue </td>
+                                            <td class='text-center'>@purdet.TotalPrice  </td>
+                                        </tr>
+
+                                        totalprice = totalprice + purdet.TotalPrice;
+
+                                    }
+
+                                }
+                                <tr>
+                                    <td class="thin-line" align="right" colspan="11"><strong>Total Price : </strong>  @Model.InvoiceMaster.InvoiceDetails.Where(u => u.IsDeleted == false).Sum(u => u.DisplayTotalPrice)</td>
+
+
+                                </tr>
+                                <tr>
+
+                                    <td class="thin-line" align="right" colspan="11"><strong>Total Tax : </strong>  @Model.InvoiceMaster.InvoiceDetails.Where(u => u.IsDeleted == false).Sum(u => u.TotalTax) </td>
+                                </tr>
+                                <tr>
+
+                                    <td class="thick-line" align="right" colspan="11"><strong>Total Bill :  @Model.InvoiceMaster.TotalBill  </strong> </td>
+                                </tr>
+                                <tr>
+                                    <td class="thin-line" align="right" colspan="11"><strong>Total Paid :</strong>  @Model.InvoiceMaster.TotalPaid </td>
+
+                                </tr>
+                                <tr>
+
+                                    <td class="thin-line" align="right" colspan="11"><strong>Total Discount :</strong>  @Model.InvoiceMaster.TotalDiscount </td>
+
+                                </tr>
+                                <tr>
+
+                                    <td class="no-line" align="right" colspan="11"><strong> Balance :</strong>  @Model.InvoiceMaster.Balance </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.InvoiceMaster.IsCommited != true)
+    {
+        <div class="form-group" style="padding:10px 0; text-align:right">
+            <input id="submit" type="submit" value="Confirm Purchase" class="btn btn-warning" style="padding:10px 20px" />
+        </div>
+    }
+</div>
+<div class="form-group NonPrintItem" style="padding:10px 0; text-align:right">
+    <a href="javascript:printDiv('printarea')">Print</a>
+</div>
+<div class="NonPrintItem">
+
+
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $.unblockUI()
+
+        $("#submit").on("click", function () {
+            var id123 = $("#InvoiceMaster_InvoicemasterID").val();
+         
+
+            event.preventDefault();
+            $.blockUI()
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '/POS/Sales/Commit',
+                data: { 'id': id123 },
+                //contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data.status) {
+
+                        $.unblockUI()
+
+                        bootbox.alert("Sales Confirmed and Stock Updated!");
+                    }
+                    else {
+                        alert('Error');
+                    }
+                    location.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                    $('#submit').val('Save');
+                }
+            });
+
+        });
+
+    });
+</script>

@@ -1,44 +1,230 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Main Screen</title>
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
-</head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/Choosen")
+    @Scripts.Render("~/bundles/blockUI")
+    @Scripts.Render("~/bundles/DatatAbles")
+    <script src="~/Scripts/jquery.blockUI.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <link href="~/Content/fontawesome-all.min.css" rel="stylesheet" />
+    <script src="~/Scripts/angular.min.js"></script>
+    @*<script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+        <link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />*@
+    @*@RenderSection("scripts", required: false)*@
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-light border-right NonPrintItem" id="sidebar-wrapper">
+            <div class="sidebar-heading">Start Bootstrap </div>
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+                <a href="/POS/QuotationMasters" class="list-group-item list-group-item-action bg-light">Quotation</a>
+                <a href="/POS/PurchaseInvoicemasters" class="list-group-item list-group-item-action bg-light">Purchase</a>
+                <a href="/POS/Sales" class="list-group-item list-group-item-action bg-light">Sales</a>
+                <a href="/Masters/Master" class="list-group-item list-group-item-action bg-light">Master</a>
+                <a href="/POS/ExpenseDetails" class="list-group-item list-group-item-action bg-light  btn-dialog">Expense</a>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <nav id="mynavbar" class="navbar navbar-expand-lg navbar-light bg-light border-bottom NonPrintItem">
+                <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Masters
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" data-toggle="modal" data-target="#CustomerModal" href="#">Add Customer </a>
+                                @*<a class="dropdown-item newcustomer" href="#">Add Customer</a>*@
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" data-toggle="modal" data-target="#CategoryModal" href="#">Add Category</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" data-toggle="modal" data-target="#ItemNameModal" href="#">Add Item Desc</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a id="logout" class="nav-link" href="#"><i class="fas fa-clock fa-sm">LogOut</i> </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <div id="partialDialogDiv"></div>
+
     @RenderSection("scripts", required: false)
+
+
+
+
+    @Html.Partial("~/Areas/Masters/Views/CustomerAsync/CustomerAddPartial.cshtml");
+
+    @Html.Partial("~/Areas/Masters/Views/CategoryAsync/CategoryAddpartial.cshtml");
+
+    @Html.Partial("~/Areas/Masters/Views/ItemNameAsync/ItemNameAddPartial.cshtml");
+    <!-- /#wrapper -->
+    <!-- Bootstrap core JavaScript -->
+    <!-- Menu Toggle Script -->
+
+
+    <script>
+        $(document).ready(function () {
+            $("#menu-toggle").click(function (e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+
+            });
+
+            $('.Chooosen').chosen();
+            $(".datepicker").datepicker();
+            $('.filtertable').DataTable();
+
+
+            $('#ItemNameModal').on('show.bs.modal', function (event) {
+                alert('Hi')
+                //modal.find('.modal-body input').val(recipient)
+
+                //$('#CategoryIdItem').chosen();
+            })
+            @*$('.ItemModal').on('click', function () {
+                $("#partialDialogDiv").dialog({
+                    autoOpen: true,
+                    resizable: false,
+                    title: 'Enter ItemName',
+                    modal: true,
+                    height: 500,
+                    width: 600,
+                    draggable: false,
+                    open: function () {
+                        $(this).load('@Url.Action("CreateAsync", "ItemNames", new { Area = "Masters" })');
+                    },
+                    close: function (event, ui) {
+                        $(this).dialog('close');
+                    },
+
+                });
+                $("#advancedSearchDialog").dialog('open');
+                return false;
+            });
+
+
+
+
+
+
+
+
+            $('.newcustomer').on('click', function () {
+                $("#partialDialogDiv").dialog({
+                    autoOpen: true,
+                    resizable: false,
+                    title: 'Enter Expense',
+                    modal: true,
+                    height: 500,
+                    width: 600,
+                    draggable: false,
+                    open: function () {
+                        $(this).load('@Url.Action("CustomerAddPartial", "CustomerAsync", new { Area = "Masters" })');
+                    },
+                    close: function (event, ui) {
+                        $(this).dialog('close');
+                    },
+
+                });
+                $("#advancedSearchDialog").dialog('open');
+                return false;
+            });*@
+
+
+
+
+
+            $('#logout').on('click', function () {
+
+
+                bootbox.confirm({
+                    message: "Do you want to logOut ?",
+                    buttons: {
+                        confirm: {
+                            label: 'Yes',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'No',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+
+                        if (result == true) {
+                            $.blockUI({ message: '<h1>Logging Out</h1>' });
+                            $.ajax({
+                                type: 'POST',
+                                url: '/Home/Logout',
+                                contentType: 'application/json',
+                                success: function (Data) {
+                                    if (Data.status) {
+                                        $.unblockUI()
+                                        var newUrl = '@Url.Action("Login", "Home", new { Area = "" })';
+                                        window.location.href = newUrl;
+
+
+                                    }
+                                    else {
+                                        alert('Error');
+                                    }
+
+                                },
+                                error: function (error) {
+                                    console.log(error);
+
+                                }
+                            });
+                        }
+
+                    }
+                });
+
+            });
+
+
+
+
+
+
+
+
+
+
+        });
+    </script>
 </body>
 </html>
